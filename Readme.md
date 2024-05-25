@@ -84,7 +84,7 @@ Problems may have been raised due to following reasons.\[1\]
 
  iv\. Reported issues may not reach the respective department.
 
-1
+
 
 **1.4 Block diagram**
 
@@ -92,7 +92,7 @@ Problems may have been raised due to following reasons.\[1\]
 
 *Figure 1 : block diagram of sajio sarkar* \[5\]
 
-2
+
 
 **2. Project Functional and Non-Functional Requirement**
 
@@ -135,13 +135,12 @@ Problems may have been raised due to following reasons.\[1\]
  •The system should facilitate communication between citizens and
  government authorities regarding issue resolution.
 
-3
 
  ![](image/media/image3.png)
 
 *Figure 2 : UseCase Diagram of Sajilo Sarkar* **\[4\]**
 
-4
+
 
 **2.2 Non-Functional Requirements:**\
 **1.Usability:**\
@@ -184,7 +183,6 @@ with varying levels of technological expertise.
  •Features such as screen reader compatibility and keyboard navigation
  should be implemented to support accessibility requirements.
 
-5
 
 **3. Expected Output** \[3\]
 
@@ -192,7 +190,7 @@ with varying levels of technological expertise.
 
 *Figure 3 : Main reporting page*
 
-6
+
 
  ![](image/media/image5.png)
 
@@ -202,13 +200,13 @@ with varying levels of technological expertise.
 
 *Figure 5 : Information submitting page*
 
-7
+
 
  ![](image/media/image7.png)
 
  *Figure 6 : Quoting and payment page for Garbage related issue*
 
-8
+
 
 **4. Project Timeline**
 
@@ -245,7 +243,7 @@ with varying levels of technological expertise.
  agile development approach where different components are built
  simultaneously.
 
-9
+
 
  **7.Frontend Development (Approx. 8 days):** This task overlaps with
  Backend Development, indicating that both the client-side and
@@ -274,7 +272,7 @@ with varying levels of technological expertise.
  deployment and launch, taking roughly 2 days. This is when the
  software goes live for users.
 
-10
+
 
 **5. References**
 
@@ -287,4 +285,4 @@ Commission,\" \[Online\]. Available:
 
 \[5\]\" BlockDiagram,\" \[Online\]. Available: https://chatuml.com/.
 
-11
+
