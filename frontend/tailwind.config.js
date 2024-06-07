@@ -12,6 +12,9 @@ export default {
         'black': '#000',
         'white': '#fff',
     },
+    fontFamily: {
+      'serif': ['Lora','Cactus Classical Serif', 'serif'],
+    },
   },
   },
   plugins: [],
