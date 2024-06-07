@@ -2,7 +2,7 @@ import NavImg from '../../../public/SajiloSarkar.svg';
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-800">
+    <footer className="bg-[#243b55]">
       <div className="flex items-center mx-16 justify-between">
         <div className="w-1/3 mr-20">
           <div className="flex items-center text-white text-3xl font-extrabold mb-4">
