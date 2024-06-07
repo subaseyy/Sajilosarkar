@@ -42,7 +42,7 @@ public class UserController {
         return userDto != null ? ResponseEntity.ok(userDto) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> users = userService.findAllUsers();
         return ResponseEntity.ok(users);
