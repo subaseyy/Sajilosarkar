@@ -1,14 +1,15 @@
-// Code: Hero Section for Contact Page
-const Hero = () => {
-  return (
-    <div>
-            <div className="flex flex-col justify-center bg-primary">
-            <h1 className="text-center text-6xl font-extrabold font-serif m-4">Contact Us</h1>
-            <p className="text-center m-4">We are here to help you with any questions you may have. Reach out to us and we will respond as soon as we can.</p>
-            </div>
-      
-    </div>
-  )
-}
+import React from 'react';
 
-export default Hero
+const HeroSection: React.FC = () => {
+  return (
+    <div className="hero-section bg-gray-200 py-12 text-center">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-yYmFfRHZwlNQh5AyjFgJO8fOf19zIi73w&s" alt="Contact Us" className="mx-auto mb-4 rounded-lg shadow-lg" />
+      <div className="hero-content">
+        <h1 className="text-4xl font-bold">Contact Us</h1>
+        <p className="mt-2 text-lg">We are here to assist you. Reach out to us through any of the methods below.</p>
+      </div>
+    </div>
+  );
+};
+
+export default HeroSection;
