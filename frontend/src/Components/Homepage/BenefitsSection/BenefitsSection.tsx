@@ -8,7 +8,6 @@ const BenefitsSection = () => {
           <p className="text-gray-600 mt-2">Discover the advantages of using our service</p>
         </div>
         <div className="flex flex-wrap justify-center -mx-4">
-          {/* Benefit 1 */}
           <div className="w-full md:w-1/3 px-4 mb-8">
             <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
               <div className="text-blue-500 rounded-full bg-blue-100 p-3">
@@ -22,7 +21,6 @@ const BenefitsSection = () => {
               </p>
             </div>
           </div>
-          {/* Benefit 2 */}
           <div className="w-full md:w-1/3 px-4 mb-8">
             <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
               <div className="text-blue-500 rounded-full bg-blue-100 p-3">
@@ -36,7 +34,6 @@ const BenefitsSection = () => {
               </p>
             </div>
           </div>
-          {/* Benefit 3 */}
           <div className="w-full md:w-1/3 px-4 mb-8">
             <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
               <div className="text-blue-500 rounded-full bg-blue-100 p-3">
