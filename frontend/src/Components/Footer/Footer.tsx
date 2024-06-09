@@ -2,8 +2,8 @@ import NavImg from '../../../public/SajiloSarkar.svg';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#243b55]">
-      <div className="flex items-center mx-16 justify-between">
+    <footer className="flex flex-col   bg-[#243b55]">
+      <div className="flex justify-around items-center mx-16">
         <div className="w-1/3 mr-20">
           <div className="flex items-center text-white text-3xl font-extrabold mb-4">
             <a href="/">
@@ -37,7 +37,7 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="flex h-8 items-center justify-between bg-black text-white px-12 mt-8">
+      <div className="flex justify-around h-8 items-center bg-black text-white px-12 mt-8">
         <span>© 2024 Sajilo Sarkar</span>
         <div className="flex space-x-4">
           <a href="/terms" className="mx-1">Terms & Conditions</a>
