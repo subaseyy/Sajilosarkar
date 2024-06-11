@@ -1,5 +1,6 @@
 package com.sajilosarkar.sajilosarkar.service.Impl;
 
+import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
 import com.sajilosarkar.sajilosarkar.entity.Role;
 import com.sajilosarkar.sajilosarkar.entity.User;
@@ -14,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
     @Transactional
     public void assignRoleToUser(Integer userId, Integer roleId) {
@@ -94,6 +93,18 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new IllegalArgumentException("User not found with id: " + userId);
         }
+    }
+
+    @Override
+    public UserDto authenticateUser(LoginDto loginDto) {
+        Optional<User> userOptional = userRepository.findByEmail(loginDto.getEmail());
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+                return mapToUserDto(user);
+            }
+        }
+        return null;
     }
 
     private UserDto mapToUserDto(User user) {

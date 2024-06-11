@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-const HeroSection: React.FC = () => {
+ const HeroSection: React.FC = () => {
   return (
     <div className="hero-section bg-gray-200 py-12 text-center">
       <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTd6dAu6Oc8c9odW_rYNigKUrFd7yTxfM0MDw&s" alt="Infrastructure Issues" className="mx-auto mb-4 rounded-lg shadow-lg" />
