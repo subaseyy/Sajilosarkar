@@ -1,4 +1,4 @@
-package com.sajilosarkar.sajilosarkar.service.Impl;
+package com.sajilosarkar.sajilosarkar.service.impl;
 
 import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;

@@ -14,7 +14,4 @@ public interface UserService {
     void deleteUserById(Integer id);
     void assignRoleToUser(Integer userId, Integer Ida);
     UserDto authenticateUser(LoginDto loginDto);
-
-
-
 }
