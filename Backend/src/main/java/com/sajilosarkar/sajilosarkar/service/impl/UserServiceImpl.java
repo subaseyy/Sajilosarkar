@@ -31,13 +31,17 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Transactional
     @Override
     public void saveUser(UserDto userDto) {
         User user = new User();
         user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.save(user);
+        user=userRepository.save(user);
+        userRepository.saveRoleUSer(1,user.getId());
+
+
     }
 
     @Override
@@ -87,7 +91,8 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.getRoles().add(role); // Assuming roles are stored in a collection in User entity
-            userRepository.save(user);
+            user=userRepository.save(user);
+            userRepository.saveRoleUSer(3,user.getId());
             // Log info for debugging
             System.out.println("Assigned role with id " + roleId + " to user with id: " + userId);
         } else {
