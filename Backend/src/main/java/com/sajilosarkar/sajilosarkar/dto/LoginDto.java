@@ -3,8 +3,10 @@ package com.sajilosarkar.sajilosarkar.dto;
 public class LoginDto {
     private String email;
     private String password;
+    private String firstName;
 
-    // Getters and Setters
+    
+
     public String getEmail() {
         return email;
     }
