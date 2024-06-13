@@ -3,10 +3,11 @@ import { NavLink } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
+  const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
-  if (username) {
+  if (username && token) {
     return (
       <>
         <Navbar />
@@ -14,7 +15,7 @@ const Login: React.FC = () => {
           <div className="max-w-md w-full space-y-8">
             <div>
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Login
+                Sign Up
               </h2>
             </div>
             <form
@@ -32,10 +33,11 @@ const Login: React.FC = () => {
               >
                 Go to Home
               </NavLink>
-              <Footer />
             </div>
           </div>
         </div>
+        <Footer />
+
       </>
     );
   }
@@ -43,11 +45,10 @@ const Login: React.FC = () => {
   return (
     <>
       <Navbar />
-
       <SignUpPage />
       <Footer />
     </>
   );
 };
 
-export default Login;
+export default SignUp;

@@ -12,7 +12,7 @@ import Login from './Components/Login';
 
 import { AuthProvider } from './Components/Context/AuthContext';
 import Dashboard from './Components/Dashboard';
-import SignUp from './Components/SignUpPage/SignUpPage';
+import SignUp from './Components/SignUp';
 
 const App: React.FC = () => {
   return (

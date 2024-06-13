@@ -4,7 +4,7 @@ import NavImg from '../../../public/SajiloSarkar.svg';
 
 const Navbar: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [username, setUsername] = useState<string | null>(null); // State to hold the username
+  const [username, setUsername] = useState<string | null>(null); 
   const navigate = useNavigate();
 
   useEffect(() => {

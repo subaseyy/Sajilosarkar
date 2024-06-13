@@ -8,7 +8,6 @@ import UserTestimonials from "./UserTestimonials/UserTestimonials"
 const FeaturePage = () => {
   return (
     <div>
-      < Navbar />
         < HeroSection />
         < KeyFeatures />
         < BenefitsInDepth />

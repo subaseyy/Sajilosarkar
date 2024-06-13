@@ -6,7 +6,7 @@ const Feature = () => {
   return (
     <div>
           <Navbar />
-       
+    
    < FeaturePage/>
    <Footer />
 
