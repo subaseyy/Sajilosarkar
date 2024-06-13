@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext'; 
 import NavImg from '../../../public/SajiloSarkar.svg';
 
 const Navbar: React.FC = () => {
-  const { isAuthenticated, username, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [username, setUsername] = useState<string | null>(null); // State to hold the username
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    if (username) {
+      setUsername(username);
+    }
+  }, []);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleLogout = () => {
-    logout();
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    setUsername(null);
     navigate('/login');
   };
-
-  
 
   return (
     <nav className="flex justify-around h-16 text-xl items-center bg-accent-1 text-white">
@@ -52,18 +58,28 @@ const Navbar: React.FC = () => {
         </ul>
       </div>
       <div>
-        {isAuthenticated ? (
+        {username ? (
+          <div className="relative flex items-center">
+          <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>Hi, {username}</span>
           <div className="relative">
-            <button
-              className="px-4 text-base border rounded-full mx-1 py-1 hover:bg-accent-2"
-              onClick={toggleDropdown}
-            >
-              Howdy {username}
-            </button>
+            <div className="cursor-pointer" onClick={toggleDropdown}>
+              <svg
+                className="w-4 h-4 ml-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
                 <NavLink to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                   Edit Profile
+                </NavLink>
+                <NavLink to="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  Dashboard
                 </NavLink>
                 <button
                   onClick={handleLogout}
@@ -74,22 +90,21 @@ const Navbar: React.FC = () => {
               </div>
             )}
           </div>
-        ) : (
+        </div> ) : (
           <>
             <NavLink to="/login" className="px-4 text-base border rounded-full mx-1 py-1 hover:bg-accent-2">
               Login
             </NavLink>
-            <NavLink to="/signup" className="px-4 text-base border rounded-full mx-1 py-1 bg-accent-2 hover:bg-accent-1">
-              SignUp
-            </NavLink>
             <NavLink
-            onClick={handleLogout}
-            to="" className="px-4 text-base border rounded-full mx-1 py-1 bg-accent-2 hover:bg-accent-1">
-              LogOut
+              to="/signup"
+              className="px-4 text-base border rounded-full mx-1 py-1 bg-accent-2 hover:bg-accent-1"
+            >
+              SignUp
             </NavLink>
           </>
         )}
       </div>
+
     </nav>
   );
 };

@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext';
+import { useAuth } from '../Context/AuthContext'; // Adjust the path as needed
 
 interface LoginDto {
   email: string;
   password: string;
 }
 
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [loginDto, setLoginDto] = useState<LoginDto>({
     email: '',
     password: '',
   });
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>(''); // Adjusted to initialize with an empty string
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,7 +26,6 @@ const Login: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
     try {
       const response = await fetch('http://localhost:8089/api/users/login', {
         method: 'POST',
@@ -35,25 +34,17 @@ const Login: React.FC = () => {
         },
         body: JSON.stringify(loginDto),
       });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+
+      if (response.ok) {
+        const data = await response.json();
+        login(data.token, data.username); 
+        navigate('/dashboard'); 
+      } else {
+        const data = await response.json();
+        setError(data.message);
       }
-  
-      const responseData = await response.json();
-  
-      if (!responseData) {
-        throw new Error('Empty response received');
-      }
-  
-      const token = responseData.token;
-      const username = responseData.username; // Assuming your API returns the username
-  
-      login(username, token);
-      navigate('/dashboard');
     } catch (error) {
-      console.error('Login error:', error.message);
-      setError('Failed to authenticate');
+      setError('An error occurred'); 
     }
   };
 
@@ -140,4 +131,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

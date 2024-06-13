@@ -12,6 +12,7 @@ const Hero = () => {
         <div className='p-4 bg-blend-darken  '>
           <img src={HeroImg}  className="h-[70vh] rounded-lg " alt="Fraustatedperson complaining " />
         </div>
+
     </div>
   )
 }
