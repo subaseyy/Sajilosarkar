@@ -13,5 +13,6 @@ public interface UserService {
     void updateUserPassword(Integer id, String newPassword);
     void deleteUserById(Integer id);
     void assignRoleToUser(Integer userId, Integer Ida);
-    UserDto authenticateUser(LoginDto loginDto);
+    String authenticateUser(LoginDto loginDto);
+
 }

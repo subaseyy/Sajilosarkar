@@ -4,10 +4,18 @@ import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
 import com.sajilosarkar.sajilosarkar.entity.Role;
 import com.sajilosarkar.sajilosarkar.entity.User;
-import com.sajilosarkar.sajilosarkar.repository.UserRepository;
 import com.sajilosarkar.sajilosarkar.repository.RoleRepository;
+import com.sajilosarkar.sajilosarkar.repository.UserRepository;
+import org.springframework.security.authentication.BadCredentialsException;
+import com.sajilosarkar.sajilosarkar.service.JwtService;
 import com.sajilosarkar.sajilosarkar.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,20 +24,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final CustomUserDetailService customUserDetailService;
 
     @Transactional
     @Override
@@ -38,10 +41,8 @@ public class UserServiceImpl implements UserService {
         user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user=userRepository.save(user);
-        userRepository.saveRoleUSer(1,user.getId());
-
-
+        user = userRepository.save(user);
+        userRepository.saveRoleUSer(1, user.getId());
     }
 
     @Override
@@ -91,8 +92,8 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.getRoles().add(role); // Assuming roles are stored in a collection in User entity
-            user=userRepository.save(user);
-            userRepository.saveRoleUSer(3,user.getId());
+            user = userRepository.save(user);
+            userRepository.saveRoleUSer(1, user.getId());
             // Log info for debugging
             System.out.println("Assigned role with id " + roleId + " to user with id: " + userId);
         } else {
@@ -101,15 +102,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto authenticateUser(LoginDto loginDto) {
-        Optional<User> userOptional = userRepository.findByEmail(loginDto.getEmail());
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            if (passwordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
-                return mapToUserDto(user);
-            }
+    public String authenticateUser(LoginDto loginDto) throws AuthenticationException {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
+            );
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return jwtService.generateToken(userDetails);
+        } catch (BadCredentialsException e) {
+            throw new LockedException("Invalid email or password", e);
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Authentication failed", e);
         }
-        return null;
     }
 
     private UserDto mapToUserDto(User user) {
