@@ -2,7 +2,6 @@ package com.sajilosarkar.sajilosarkar.service;
 
 import com.sajilosarkar.sajilosarkar.entity.Role;
 import com.sajilosarkar.sajilosarkar.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +11,6 @@ public class RoleInitializationService {
 
     private final RoleRepository roleRepository;
 
-    @Autowired
     public RoleInitializationService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
