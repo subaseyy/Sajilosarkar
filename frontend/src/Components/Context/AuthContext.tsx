@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 interface AuthContextType {
   token: string | null;
+  isAuthenticated: boolean; // Add isAuthenticated property
   login: (token: string) => void;
   logout: () => void;
 }
@@ -18,6 +19,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [token, setToken] = useState<string | null>(localStorage.getItem('jwt-token'));
+  const isAuthenticated = !!token; // Determine authentication status based on token presence
 
   const login = (token: string) => {
     localStorage.setItem('jwt-token', token);
@@ -31,6 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const contextValue: AuthContextType = {
     token,
+    isAuthenticated, // Assign isAuthenticated based on token presence
     login,
     logout,
   };
