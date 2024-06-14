@@ -6,26 +6,25 @@ import Home from "./Components/Home";
 import About from "./Components/About";
 import Feature from "./Components/Feature";
 import Contact from "./Components/Contact";
-import FeaturePage from "./Components/FeaturePage/FeaturePage";
 import Login from "./Components/Login";
 
 import { AuthProvider } from "./Components/Context/AuthContext";
 import Dashboard from "./Components/Dashboard";
 import SignUp from "./Components/SignUp";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import AuthHandlerComponent from "./Components/Context/AuthHandlerComponent";
+// import AuthHandlerComponent from "./Components/Context/AuthHandlerComponent";
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-      <AuthHandlerComponent />
+      {/* <AuthHandlerComponent /> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/features" element={<Feature />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/faqs" element={<FeaturePage />} />
+            <Route path="/faqs" element={<Feature />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route

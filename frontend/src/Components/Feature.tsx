@@ -5,8 +5,8 @@ import Navbar from "./Navbar/Navbar"
 const Feature = () => {
   return (
     <div>
-          <Navbar />
-    
+  
+   <Navbar />  
    < FeaturePage/>
    <Footer />
 

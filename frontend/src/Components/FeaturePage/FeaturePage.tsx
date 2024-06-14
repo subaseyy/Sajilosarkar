@@ -1,4 +1,3 @@
-import Footer from "../Footer/Footer"
 import BenefitsInDepth from "./BenefitsInDepth/BenefitsInDepth"
 import HeroSection from "./HeroSection/HeroSection"
 import KeyFeatures from "./KeyFeatures/KeyFeatures"
@@ -11,7 +10,6 @@ const FeaturePage = () => {
         < KeyFeatures />
         < BenefitsInDepth />
         < UserTestimonials />
-        < Footer />
     </div>
   )
 }

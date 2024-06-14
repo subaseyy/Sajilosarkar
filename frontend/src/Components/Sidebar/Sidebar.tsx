@@ -1,7 +1,28 @@
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
 import NavImg from "../../../public/SajiloSarkar.svg";
+import { jwtDecode ,  JwtPayload } from "jwt-decode"; 
 
+
+interface DecodedToken extends JwtPayload {
+  username: string;
+  sub: string;
+}
 const Sidebar = () => {
+
+  const token = localStorage.getItem("jwt-token");
+  const [username, setUsername] = useState<string | null>(null); 
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken: DecodedToken = jwtDecode(token);
+      setUsername(decodedToken.sub);
+    }
+  }, []);
+  
+
+
+
   return (
     <div className="w-64 flex flex-col min-h-screen bg-accent-1">
       <div className="flex flex-col items-center mt-16 text-3xl font-extrabold">
@@ -35,14 +56,17 @@ const Sidebar = () => {
                   fill-rule="evenodd"
                   clip-rule="evenodd"
                 ></path>
-              </svg>{" "}
+              </svg>
               &nbsp; Home
             </NavLink>
           </li>
         </ul>
       </div>
-      <div>
-        
+      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 w-full to-pink-500 absolute bottom-0 text-center text-black dark:text-white">
+       <div className="ml-6">
+        <span>You are Logged in as</span>  
+        <span> {username || "User"} </span>
+        </div>
       </div>
     </div>
   );

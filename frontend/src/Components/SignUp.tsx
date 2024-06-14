@@ -4,10 +4,9 @@ import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 
 const SignUp: React.FC = () => {
-  const token = localStorage.getItem("token");
-  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("jwt-token");
 
-  if (username && token) {
+  if (token) {
     return (
       <>
         <Navbar />

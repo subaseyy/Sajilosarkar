@@ -7,7 +7,7 @@ import Footer from "./Footer/Footer";
 
 const Login: React.FC = () => {
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('jwt-token');
 
 
   if  (token) {
