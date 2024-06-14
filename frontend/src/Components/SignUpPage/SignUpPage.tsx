@@ -23,7 +23,7 @@ const SignUpPage = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8089/api/users/register', formData);
+            const response = await axios.post('/api/users/register', formData);
             console.log(response.data);
             // Handle successful registration (e.g., redirect to login page)
                 navigate('/login');

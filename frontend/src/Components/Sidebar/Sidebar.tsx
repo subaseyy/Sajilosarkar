@@ -17,10 +17,10 @@ const Sidebar = () => {
       </div>
       <div className="flex mt-12 flex-col">
         <ul className="w-full text-white text-2xl">
-          <li>
+          <li className=" hover:bg-accent-2 hover:border-r-2 hover:border-white py-2">
             <NavLink
               to="/"
-              className=" flex items-center justify-center nav-link  hover:bg-white hover:text-black"
+              className=" flex items-center justify-center nav-link "
             >
               <svg
                 width="20"
@@ -40,6 +40,9 @@ const Sidebar = () => {
             </NavLink>
           </li>
         </ul>
+      </div>
+      <div>
+        
       </div>
     </div>
   );

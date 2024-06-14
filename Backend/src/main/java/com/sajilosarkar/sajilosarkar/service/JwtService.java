@@ -17,6 +17,7 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+
     private static final String SECRET_KEY = "294A404E635266556A586E3272357538782F4125442A472D4B6150645367566B";
 
     private Claims extractAllClaims(String token) {
@@ -62,6 +63,7 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
+
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getExpiration();
     }
 }

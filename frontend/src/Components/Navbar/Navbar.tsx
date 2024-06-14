@@ -4,13 +4,13 @@ import NavImg from '../../../public/SajiloSarkar.svg';
 
 const Navbar: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [username, setUsername] = useState<string | null>(null); 
+  const [token, setToken] = useState<string | null>(null); 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (username) {
-      setUsername(username);
+    const token = localStorage.getItem('token');
+    if (token) {
+      setToken(token);
     }
   }, []);
 
@@ -18,8 +18,6 @@ const Navbar: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    setUsername(null);
     navigate('/login');
   };
 
@@ -58,9 +56,9 @@ const Navbar: React.FC = () => {
         </ul>
       </div>
       <div>
-        {username ? (
+        {token ? (
           <div className="relative flex items-center">
-          <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>Hi, {username}</span>
+          <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>Hi, </span>
           <div className="relative">
             <div className="cursor-pointer" onClick={toggleDropdown}>
               <svg

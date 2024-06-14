@@ -7,11 +7,10 @@ import Footer from "./Footer/Footer";
 
 const Login: React.FC = () => {
 
-  const username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
 
 
-  if (username && token) {
+  if  (token) {
     return (
       <>
       < Navbar/>
