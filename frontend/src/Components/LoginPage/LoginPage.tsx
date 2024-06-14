@@ -1,50 +1,39 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext'; // Adjust the path as needed
-
-interface LoginDto {
-  email: string;
-  password: string;
-}
+import { useAuth } from '../Context/AuthContext';
 
 const LoginPage: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string>('');
+
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [loginDto, setLoginDto] = useState<LoginDto>({
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState<string>(''); // Adjusted to initialize with an empty string
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginDto((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const submitUser = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8089/api/users/login', {
+      const response = await fetch('/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(loginDto),
+        body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        login(data.token); 
-        navigate('/dashboard'); 
+        login(data.token); // Store the token in context
+        setEmail('');
+        setPassword('');
+        navigate('/dashboard'); // Redirect to a protected route
       } else {
-        const data = await response.json();
-        setError(data.message);
+        setError('Invalid credentials, please try again.');
       }
     } catch (error) {
-      setError('An error occurred'); 
+      setError('An error occurred. Please try again later.');
+      console.error('Error:', error); // Log the error to console for debugging
     }
   };
 
@@ -60,7 +49,7 @@ const LoginPage: React.FC = () => {
             </div>
           )}
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+        <form className="mt-8 space-y-6" onSubmit={submitUser}>
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -75,8 +64,8 @@ const LoginPage: React.FC = () => {
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
-                value={loginDto.email}
-                onChange={handleInputChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -91,8 +80,8 @@ const LoginPage: React.FC = () => {
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
-                value={loginDto.password}
-                onChange={handleInputChange}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>

@@ -32,13 +32,14 @@ const Login: React.FC = () => {
               >
                 Go to Home
               </NavLink>
-          <Footer />
 
             </div>
 
        
       </div>
       </div>
+      <Footer />
+
       </>
     )};
 

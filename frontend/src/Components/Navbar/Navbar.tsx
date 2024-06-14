@@ -1,25 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import  { JwtPayload } from 'jwt-decode';
 import NavImg from '../../../public/SajiloSarkar.svg';
+
+// Define an interface that extends JwtPayload to include username
+interface DecodedToken extends JwtPayload {
+  username: string;
+}
 
 const Navbar: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [token, setToken] = useState<string | null>(null); 
+  const [token, setToken] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null); // State to hold the username
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwt-token');
     if (token) {
       setToken(token);
+
+      // Decode the token to extract username
+      const decodedToken: DecodedToken = jwtDecode(token);
+      setUsername(decodedToken.sub);
     }
   }, []);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('jwt-token');
+    setToken(null);
+    setUsername(null);
     navigate('/login');
   };
+
 
   return (
     <nav className="flex justify-around h-16 text-xl items-center bg-accent-1 text-white">
@@ -58,37 +73,46 @@ const Navbar: React.FC = () => {
       <div>
         {token ? (
           <div className="relative flex items-center">
-          <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>Hi, </span>
-          <div className="relative">
-            <div className="cursor-pointer" onClick={toggleDropdown}>
-              <svg
-                className="w-4 h-4 ml-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </div>
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                <NavLink to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Edit Profile
-                </NavLink>
-                <NavLink to="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Dashboard
-                </NavLink>
-                <button
-                  onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+            <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>
+              Hi, {username || 'User'}
+            </span>
+            <div className="relative">
+              <div className="cursor-pointer" onClick={toggleDropdown}>
+                <svg
+                  className="w-4 h-4 ml-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  Logout
-                </button>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
               </div>
-            )}
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                  <NavLink
+                    to="/profile"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Edit Profile
+                  </NavLink>
+                  <NavLink
+                    to="/dashboard"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Dashboard
+                  </NavLink>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
-        </div> ) : (
+        ) : (
           <>
             <NavLink to="/login" className="px-4 text-base border rounded-full mx-1 py-1 hover:bg-accent-2">
               Login
@@ -102,7 +126,6 @@ const Navbar: React.FC = () => {
           </>
         )}
       </div>
-
     </nav>
   );
 };

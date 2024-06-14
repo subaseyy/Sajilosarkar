@@ -1,22 +1,22 @@
-import './App.css';
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import "./App.css";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import Home from "./Components/Home";
+import About from "./Components/About";
+import Feature from "./Components/Feature";
+import Contact from "./Components/Contact";
+import FeaturePage from "./Components/FeaturePage/FeaturePage";
+import Login from "./Components/Login";
 
-import Home from './Components/Home';
-import About from './Components/About';
-import Feature from './Components/Feature';
-import Contact from './Components/Contact';
-import FeaturePage from './Components/FeaturePage/FeaturePage';
-import Login from './Components/Login';
-
-import { AuthProvider } from './Components/Context/AuthContext';
-import Dashboard from './Components/Dashboard';
-import SignUp from './Components/SignUp';
+import { AuthProvider } from "./Components/Context/AuthContext";
+import Dashboard from "./Components/Dashboard";
+import SignUp from "./Components/SignUp";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 
 const App: React.FC = () => {
   return (
-    <AuthProvider >
+    <AuthProvider>
       <Router>
         <div className="App">
           <Routes>
@@ -27,7 +27,14 @@ const App: React.FC = () => {
             <Route path="/faqs" element={<FeaturePage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </div>
       </Router>
