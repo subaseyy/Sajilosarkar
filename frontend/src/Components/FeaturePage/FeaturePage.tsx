@@ -1,5 +1,4 @@
 import Footer from "../Footer/Footer"
-import Navbar from "../Navbar/Navbar"
 import BenefitsInDepth from "./BenefitsInDepth/BenefitsInDepth"
 import HeroSection from "./HeroSection/HeroSection"
 import KeyFeatures from "./KeyFeatures/KeyFeatures"

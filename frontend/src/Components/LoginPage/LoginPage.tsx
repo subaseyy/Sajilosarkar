@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        login(data.token, data.username); 
+        login(data.token); 
         navigate('/dashboard'); 
       } else {
         const data = await response.json();
