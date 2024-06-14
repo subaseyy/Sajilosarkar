@@ -1,34 +1,29 @@
-# Use Maven base image for the build stage
-FROM maven:3.8.6-openjdk-11 AS build
+# Use an official Maven image with OpenJDK 17 for the build stage
+FROM maven:3.8.6-eclipse-temurin-17 AS build
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the Maven wrapper and pom.xml
-COPY mvnw .
-COPY .mvn .mvn
+# Copy the pom.xml file and download dependencies
 COPY pom.xml .
 
-# Download dependencies
-RUN ./mvnw dependency:go-offline
+# Download dependencies without packaging the application
+RUN mvn dependency:go-offline
 
-# Copy the project source
-COPY src src
+# Copy the rest of the application source code
+COPY src ./src
 
-# Build the application
-RUN ./mvnw package -DskipTests
+# Package the application (without running tests)
+RUN mvn package -DskipTests
 
-# Use a minimal base image for the runtime stage
-FROM adoptopenjdk:11-jre-hotspot
+# Use an official OpenJDK runtime image for the runtime stage
+FROM eclipse-temurin:17-jre
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
 # Copy the packaged JAR file from the build stage
-COPY --from=build /app/target/*.jar /app/app.jar
+COPY --from=build /app/target/Backend-0.0.1-SNAPSHOT.jar app.jar
 
-# Expose the port that your application runs on
-EXPOSE 8089
-
-# Command to run the Spring Boot application
+# Specify the command to run the application
 CMD ["java", "-jar", "app.jar"]
