@@ -13,12 +13,13 @@ import { AuthProvider } from "./Components/Context/AuthContext";
 import Dashboard from "./Components/Dashboard";
 import SignUp from "./Components/SignUp";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import AuthHandlerComponent from "./Components/Context/AuthHandlerComponent";
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <div className="App">
+      <AuthHandlerComponent />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -36,7 +37,6 @@ const App: React.FC = () => {
               }
             />
           </Routes>
-        </div>
       </Router>
     </AuthProvider>
   );

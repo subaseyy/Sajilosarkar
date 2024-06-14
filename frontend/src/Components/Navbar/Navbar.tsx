@@ -7,6 +7,7 @@ import NavImg from '../../../public/SajiloSarkar.svg';
 // Define an interface that extends JwtPayload to include username
 interface DecodedToken extends JwtPayload {
   username: string;
+  sub: string;
 }
 
 const Navbar: React.FC = () => {
