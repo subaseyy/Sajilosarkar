@@ -1,30 +1,26 @@
-import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import {jwtDecode, JwtPayload } from "jwt-decode";
 import NavImg from "../../../public/SajiloSarkar.svg";
-import { jwtDecode ,  JwtPayload } from "jwt-decode"; 
-
+import MenuItem from "./MenuItem"; 
+import { NavLink } from "react-router-dom";
 
 interface DecodedToken extends JwtPayload {
   username: string;
   sub: string;
 }
-const Sidebar = () => {
 
+const Sidebar: React.FC = () => {
   const token = localStorage.getItem("jwt-token");
-  const [username, setUsername] = useState<string | null>(null); 
-
+  const [username, setUsername] = useState("");
   useEffect(() => {
     if (token) {
       const decodedToken: DecodedToken = jwtDecode(token);
       setUsername(decodedToken.sub);
     }
-  }, []);
-  
-
-
+  }, [token]);
 
   return (
-    <div className="w-64 flex flex-col min-h-screen bg-accent-1">
+    <div className="w-60 flex flex-col min-h-screen bg-accent-1">
       <div className="flex flex-col items-center mt-16 text-3xl font-extrabold">
         <NavLink to="/dashboard">
           <img src={NavImg} className="h-32 p-1" alt="Sajilo Sarkar Logo" />
@@ -37,138 +33,52 @@ const Sidebar = () => {
         </NavLink>
       </div>
       <div className="flex mt-12 flex-col">
-        <ul className="w-full text-white text-2xl">
-          <li className=" hover:bg-accent-2 hover:border-r-2 hover:border-white py-2">
-            <NavLink
-              to="/dashboard"
-              className=" flex items-center justify-center nav-link "
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.07926 0.222253C7.31275 -0.007434 7.6873 -0.007434 7.92079 0.222253L14.6708 6.86227C14.907 7.09465 14.9101 7.47453 14.6778 7.71076C14.4454 7.947 14.0655 7.95012 13.8293 7.71773L13 6.90201V12.5C13 12.7761 12.7762 13 12.5 13H2.50002C2.22388 13 2.00002 12.7761 2.00002 12.5V6.90201L1.17079 7.71773C0.934558 7.95012 0.554672 7.947 0.32229 7.71076C0.0899079 7.47453 0.0930283 7.09465 0.32926 6.86227L7.07926 0.222253ZM7.50002 1.49163L12 5.91831V12H10V8.49999C10 8.22385 9.77617 7.99999 9.50002 7.99999H6.50002C6.22388 7.99999 6.00002 8.22385 6.00002 8.49999V12H3.00002V5.91831L7.50002 1.49163ZM7.00002 12H9.00002V8.99999H7.00002V12Z"
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              &nbsp; Home
-            </NavLink>
-            <NavLink
-              to="/dashboard"
-              className=" flex items-center justify-center nav-link "
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.07926 0.222253C7.31275 -0.007434 7.6873 -0.007434 7.92079 0.222253L14.6708 6.86227C14.907 7.09465 14.9101 7.47453 14.6778 7.71076C14.4454 7.947 14.0655 7.95012 13.8293 7.71773L13 6.90201V12.5C13 12.7761 12.7762 13 12.5 13H2.50002C2.22388 13 2.00002 12.7761 2.00002 12.5V6.90201L1.17079 7.71773C0.934558 7.95012 0.554672 7.947 0.32229 7.71076C0.0899079 7.47453 0.0930283 7.09465 0.32926 6.86227L7.07926 0.222253ZM7.50002 1.49163L12 5.91831V12H10V8.49999C10 8.22385 9.77617 7.99999 9.50002 7.99999H6.50002C6.22388 7.99999 6.00002 8.22385 6.00002 8.49999V12H3.00002V5.91831L7.50002 1.49163ZM7.00002 12H9.00002V8.99999H7.00002V12Z"
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              &nbsp; Home
-            </NavLink>
-            <NavLink
-              to="/dashboard"
-              className=" flex items-center justify-center nav-link "
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.07926 0.222253C7.31275 -0.007434 7.6873 -0.007434 7.92079 0.222253L14.6708 6.86227C14.907 7.09465 14.9101 7.47453 14.6778 7.71076C14.4454 7.947 14.0655 7.95012 13.8293 7.71773L13 6.90201V12.5C13 12.7761 12.7762 13 12.5 13H2.50002C2.22388 13 2.00002 12.7761 2.00002 12.5V6.90201L1.17079 7.71773C0.934558 7.95012 0.554672 7.947 0.32229 7.71076C0.0899079 7.47453 0.0930283 7.09465 0.32926 6.86227L7.07926 0.222253ZM7.50002 1.49163L12 5.91831V12H10V8.49999C10 8.22385 9.77617 7.99999 9.50002 7.99999H6.50002C6.22388 7.99999 6.00002 8.22385 6.00002 8.49999V12H3.00002V5.91831L7.50002 1.49163ZM7.00002 12H9.00002V8.99999H7.00002V12Z"
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              &nbsp; Home
-            </NavLink>
-            <NavLink
-              to="/dashboard"
-              className=" flex items-center justify-center nav-link "
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.07926 0.222253C7.31275 -0.007434 7.6873 -0.007434 7.92079 0.222253L14.6708 6.86227C14.907 7.09465 14.9101 7.47453 14.6778 7.71076C14.4454 7.947 14.0655 7.95012 13.8293 7.71773L13 6.90201V12.5C13 12.7761 12.7762 13 12.5 13H2.50002C2.22388 13 2.00002 12.7761 2.00002 12.5V6.90201L1.17079 7.71773C0.934558 7.95012 0.554672 7.947 0.32229 7.71076C0.0899079 7.47453 0.0930283 7.09465 0.32926 6.86227L7.07926 0.222253ZM7.50002 1.49163L12 5.91831V12H10V8.49999C10 8.22385 9.77617 7.99999 9.50002 7.99999H6.50002C6.22388 7.99999 6.00002 8.22385 6.00002 8.49999V12H3.00002V5.91831L7.50002 1.49163ZM7.00002 12H9.00002V8.99999H7.00002V12Z"
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              &nbsp; Home
-            </NavLink>
-            <NavLink
-              to="/dashboard"
-              className=" flex items-center justify-center nav-link "
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.07926 0.222253C7.31275 -0.007434 7.6873 -0.007434 7.92079 0.222253L14.6708 6.86227C14.907 7.09465 14.9101 7.47453 14.6778 7.71076C14.4454 7.947 14.0655 7.95012 13.8293 7.71773L13 6.90201V12.5C13 12.7761 12.7762 13 12.5 13H2.50002C2.22388 13 2.00002 12.7761 2.00002 12.5V6.90201L1.17079 7.71773C0.934558 7.95012 0.554672 7.947 0.32229 7.71076C0.0899079 7.47453 0.0930283 7.09465 0.32926 6.86227L7.07926 0.222253ZM7.50002 1.49163L12 5.91831V12H10V8.49999C10 8.22385 9.77617 7.99999 9.50002 7.99999H6.50002C6.22388 7.99999 6.00002 8.22385 6.00002 8.49999V12H3.00002V5.91831L7.50002 1.49163ZM7.00002 12H9.00002V8.99999H7.00002V12Z"
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              &nbsp; Home
-            </NavLink>
-            <NavLink
-              to="/dashboard"
-              className=" flex items-center justify-center nav-link "
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 15 15"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7.07926 0.222253C7.31275 -0.007434 7.6873 -0.007434 7.92079 0.222253L14.6708 6.86227C14.907 7.09465 14.9101 7.47453 14.6778 7.71076C14.4454 7.947 14.0655 7.95012 13.8293 7.71773L13 6.90201V12.5C13 12.7761 12.7762 13 12.5 13H2.50002C2.22388 13 2.00002 12.7761 2.00002 12.5V6.90201L1.17079 7.71773C0.934558 7.95012 0.554672 7.947 0.32229 7.71076C0.0899079 7.47453 0.0930283 7.09465 0.32926 6.86227L7.07926 0.222253ZM7.50002 1.49163L12 5.91831V12H10V8.49999C10 8.22385 9.77617 7.99999 9.50002 7.99999H6.50002C6.22388 7.99999 6.00002 8.22385 6.00002 8.49999V12H3.00002V5.91831L7.50002 1.49163ZM7.00002 12H9.00002V8.99999H7.00002V12Z"
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              &nbsp; Home
-            </NavLink>
-          </li>
-        </ul>
+        <MenuItem title="Home" to="/dashboard" />
+        <MenuItem title="Report an Issue">
+          <MenuItem title="New Report" to="/dashboard/report-issue/new-issue" />
+          <MenuItem title="My Reports" to="/dashboard/report-issue/report-list" />
+        </MenuItem>
+        <MenuItem title="Issues">
+          <MenuItem title="Browse Issues" to="/issues/browse" >
+            <MenuItem title="By Category" to="/issues/browse/category" />
+            <MenuItem title="By Location" to="/issues/browse/location"  />
+            <MenuItem title="By Status"  to="/issues/browse/status" />
+          </MenuItem>
+          <MenuItem title="Top Reported Issues" to="/issues/top" />
+          <MenuItem title="Recent Reports"    to="/issues/recent"/>
+        </MenuItem>
+
+
+        <MenuItem title="Notifications"  to="/notifications" />
+        <MenuItem title="Help & Support">
+          <MenuItem title="FAQ" to="/faq" />
+          <MenuItem title="Contact Us" to="/contact" />
+          <MenuItem title="Accessibility Options" to="/accessibility" />
+          <MenuItem title="User Guide" to="/user-guide" />
+        </MenuItem>
+        <MenuItem title="Account">
+          <MenuItem title="Profile" to="/profile" />
+          <MenuItem title="Settings" to="/settings" />
+          <MenuItem title="Logout" to="/logout" />
+        </MenuItem>
+       
+        <MenuItem title="Settings">
+          <MenuItem title="System Settings" to="/settings/system" />
+          <MenuItem title="Security Settings"  to="/settings/security"/>
+          <MenuItem title="Language Preferences" to="/settings/language" />
+        </MenuItem>
+
+
       </div>
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 w-full to-pink-500 absolute bottom-0 text-center text-black dark:text-white">
-       <div className="ml-6">
-        <span>You are Logged in as</span>  
-        <span> {username || "User"} </span>
+      <div>
+        <div className="text-white flex items-center justify-center mt-12 flex-col">
+          <p> You are logged in as <br /> 
+          <span className="font-bold"> {username} </span></p>
+          <p className="text-xs">Sajilo Sarkar © 2022. All rights reserved.</p>
         </div>
+
       </div>
-    </div>
+      </div>
   );
 };
 
