@@ -41,11 +41,13 @@ const App: React.FC = () => {
     },
     // Add more reports as needed
   ]);
-  // const [selectedReportId, setSelectedReportId] = useState<number | null>(null);
+  const [selectedReportId, setSelectedReportId] = useState<number | null>(null);
 
-  // const handleSelectReport = (id: number) => {
-  //   setSelectedReportId(id);
-  // };
+  console.log(selectedReportId)
+
+  const handleSelectReport = (id: number) => {
+    setSelectedReportId(id);
+  };
 
   const handleReply = (id: number, reply: string) => {
     setReports(reports.map(report => 
