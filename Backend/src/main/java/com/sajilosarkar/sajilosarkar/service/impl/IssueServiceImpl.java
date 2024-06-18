@@ -3,7 +3,9 @@ package com.sajilosarkar.sajilosarkar.service.impl;
 import com.sajilosarkar.sajilosarkar.dto.IssueDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
 import com.sajilosarkar.sajilosarkar.entity.Issue;
+import com.sajilosarkar.sajilosarkar.entity.User;
 import com.sajilosarkar.sajilosarkar.repository.IssueRepository;
+import com.sajilosarkar.sajilosarkar.repository.UserRepository;
 import com.sajilosarkar.sajilosarkar.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class IssueServiceImpl implements IssueService {
 
     @Autowired
     private IssueRepository issueRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public void saveIssue(IssueDto issueDto) {
@@ -92,58 +97,87 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public List<IssueDto> findIssueByUser(UserDto userDto) {
-        return issueRepository.findByUserId(userDto.getId()).stream()
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        return issueRepository.findByUser(user).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<IssueDto> findIssueByUserAndTitle(UserDto userDto, String title) {
-        return issueRepository.findByUserIdAndTitle(userDto.getId(), title).stream()
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        return issueRepository.findByUserAndTitle(user, title).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<IssueDto> findIssueByUserAndCategory(UserDto userDto, String category) {
-        return issueRepository.findByUserIdAndCategory(userDto.getId(), category).stream()
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        return issueRepository.findByUserAndCategory(user, category).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<IssueDto> findIssueByUserAndLocation(UserDto userDto, String location) {
-        return issueRepository.findByUserIdAndLocation(userDto.getId(), location).stream()
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        return issueRepository.findByUserAndLocation(user, location).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<IssueDto> findIssueByUserAndDescription(UserDto userDto, String description) {
-        return issueRepository.findByUserIdAndDescription(userDto.getId(), description).stream()
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        return issueRepository.findByUserAndDescription(user, description).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<IssueDto> findIssueByUserAndPriority(UserDto userDto, String priority) {
-        return issueRepository.findByUserIdAndPriority(userDto.getId(), priority).stream()
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        return issueRepository.findByUserAndPriority(user, priority).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<IssueDto> findIssueByUserAndStatus(UserDto userDto, Boolean status) {
-        return issueRepository.findByUserIdAndStatus(userDto.getId(), status).stream()
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+        return issueRepository.findByUserAndStatus(user, status).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
 
     private Issue convertToEntity(IssueDto issueDto) {
-        // Conversion logic here
+        // Implement your conversion logic here
+        Issue issue = new Issue();
+        issue.setId(issueDto.getId());
+        issue.setTitle(issueDto.getTitle());
+        issue.setCategory(issueDto.getCategory());
+        issue.setLocation(issueDto.getLocation());
+        issue.setDescription(issueDto.getDescription());
+        issue.setPriority(issueDto.getPriority());
+        issue.setStatus(issueDto.getStatus());
+        issue.setImage(issueDto.getImage());
+        // Set user and role here as needed
+        return issue;
     }
 
     private IssueDto convertToDto(Issue issue) {
-        // Conversion logic here
+        // Implement your conversion logic here
+        IssueDto issueDto = new IssueDto();
+        issueDto.setId(issue.getId());
+        issueDto.setTitle(issue.getTitle());
+        issueDto.setCategory(issue.getCategory());
+        issueDto.setLocation(issue.getLocation());
+        issueDto.setDescription(issue.getDescription());
+        issueDto.setPriority(issue.getPriority());
+        issueDto.setStatus(issue.getStatus());
+        issueDto.setImage(issue.getImage());
+        // Set user and role here as needed
+        return issueDto;
     }
 }

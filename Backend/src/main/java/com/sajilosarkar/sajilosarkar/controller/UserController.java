@@ -66,7 +66,7 @@ public class UserController {
         return ResponseEntity.ok("Password updated successfully!");
     }
 
-    @DeleteMapping("/deleteuser/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<String> deleteUserById(@PathVariable Integer id) {
         userService.deleteUserById(id);
         return ResponseEntity.ok("User deleted successfully!");
