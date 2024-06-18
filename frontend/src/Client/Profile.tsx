@@ -1,4 +1,4 @@
-import Sidebar from "./Sidebar/Sidebar"
+import Sidebar from "../Components/Sidebar/Sidebar"
 
 const Profile = () => {
   return (

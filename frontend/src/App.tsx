@@ -5,13 +5,13 @@ import Home from "./Components/Home";
 import About from "./Components/About";
 import Feature from "./Components/Feature";
 import Contact from "./Components/Contact";
-import Login from "./Components/Login";
+import Login from "./Auth/Login";
 import { AuthProvider } from "./Components/Context/AuthContext";
-import Dashboard from "./Components/Dashboard";
-import SignUp from "./Components/SignUp";
+import Dashboard from "./Client/Dashboard";
+import SignUp from "./Auth/SignUp";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import NewIssueReport from "./Components/ReportIssue/NewIssueReport";
-import Profile from "./Components/Profile";
+import Profile from "./Client/Profile";
 import ReportDetail from "./Components/ReportIssue/ReportDetail";
 import ReportList from "./Components/ReportIssue/ReportList";
 

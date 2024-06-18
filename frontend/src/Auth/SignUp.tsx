@@ -1,7 +1,7 @@
-import SignUpPage from "./SignUpPage/SignUpPage";
+import SignUpPage from "../Components/SignUpPage/SignUpPage";
 import { NavLink } from "react-router-dom";
-import Navbar from "./Navbar/Navbar";
-import Footer from "./Footer/Footer";
+import Navbar from "../Components/Navbar/Navbar";
+import Footer from "../Components/Footer/Footer";
 
 const SignUp: React.FC = () => {
   const token = localStorage.getItem("jwt-token");
