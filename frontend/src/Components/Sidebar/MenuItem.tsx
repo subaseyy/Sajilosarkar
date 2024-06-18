@@ -5,6 +5,7 @@ interface MenuItemProps {
   title: string;
   to?: string; // Optional prop for NavLink
   children?: ReactNode;
+  onClick?: () => void;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ title, to, children }) => {

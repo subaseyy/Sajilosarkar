@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-import  { JwtPayload } from 'jwt-decode';
+import { jwtDecode,  JwtPayload } from 'jwt-decode';
 import NavImg from '../../../public/SajiloSarkar.svg';
 
 // Define an interface that extends JwtPayload to include username
@@ -13,7 +12,7 @@ interface DecodedToken extends JwtPayload {
 const Navbar: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [token, setToken] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null); // State to hold the username
+  const [username, setUsername] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,9 +20,21 @@ const Navbar: React.FC = () => {
     if (token) {
       setToken(token);
 
-      // Decode the token to extract username
-      const decodedToken: DecodedToken = jwtDecode(token);
-      setUsername(decodedToken.sub);
+      // Validate token format before decoding
+      if (token.split('.').length === 3) {
+        try {
+          const decodedToken: DecodedToken = jwtDecode(token);
+          setUsername(decodedToken.sub);
+        } catch (error) {
+          console.error('Invalid token:', error);
+          localStorage.removeItem('jwt-token');
+          setToken(null);
+        }
+      } else {
+        console.error('Invalid token format');
+        localStorage.removeItem('jwt-token');
+        setToken(null);
+      }
     }
   }, []);
 
@@ -35,7 +46,6 @@ const Navbar: React.FC = () => {
     setUsername(null);
     navigate('/login');
   };
-
 
   return (
     <nav className="flex justify-around h-16 text-xl items-center bg-accent-1 text-white">

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import Home from "./Components/Home";
-import About from "./Components/About";
-import Feature from "./Components/Feature";
-import Contact from "./Components/Contact";
+import Home from "./landingpages/Home";
+import About from "./landingpages/About";
+import Feature from "./landingpages/Feature";
+import Contact from "./landingpages/Contact";
 import Login from "./Auth/Login";
 import { AuthProvider } from "./Components/Context/AuthContext";
 import Dashboard from "./Client/Dashboard";

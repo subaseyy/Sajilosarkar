@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {jwtDecode, JwtPayload } from "jwt-decode";
 import NavImg from "../../../public/SajiloSarkar.svg";
 import MenuItem from "./MenuItem"; 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 interface DecodedToken extends JwtPayload {
   username: string;
@@ -12,12 +12,17 @@ interface DecodedToken extends JwtPayload {
 const Sidebar: React.FC = () => {
   const token = localStorage.getItem("jwt-token");
   const [username, setUsername] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     if (token) {
       const decodedToken: DecodedToken = jwtDecode(token);
       setUsername(decodedToken.sub);
     }
   }, [token]);
+  const handleLogout = () => {
+    localStorage.removeItem('jwt-token');
+    navigate('/login');
+  };
 
   return (
     <div className="w-60 flex flex-col min-h-screen bg-accent-1">
@@ -38,18 +43,14 @@ const Sidebar: React.FC = () => {
           <MenuItem title="New Report" to="/dashboard/report-issue/new-issue" />
           <MenuItem title="My Reports" to="/dashboard/report-issue/report-list" />
         </MenuItem>
-        <MenuItem title="Issues">
-          <MenuItem title="Browse Issues" to="/issues/browse" >
+          <MenuItem title="Browse Issues">
             <MenuItem title="By Category" to="/issues/browse/category" />
             <MenuItem title="By Location" to="/issues/browse/location"  />
             <MenuItem title="By Status"  to="/issues/browse/status" />
           </MenuItem>
-          <MenuItem title="Top Reported Issues" to="/issues/top" />
-          <MenuItem title="Recent Reports"    to="/issues/recent"/>
-        </MenuItem>
+          
 
 
-        <MenuItem title="Notifications"  to="/notifications" />
         <MenuItem title="Help & Support">
           <MenuItem title="FAQ" to="/faq" />
           <MenuItem title="Contact Us" to="/contact" />
@@ -59,7 +60,7 @@ const Sidebar: React.FC = () => {
         <MenuItem title="Account">
           <MenuItem title="Profile" to="/profile" />
           <MenuItem title="Settings" to="/settings" />
-          <MenuItem title="Logout" to="/logout" />
+          <MenuItem title="Logout" onClick={handleLogout} />
         </MenuItem>
        
         <MenuItem title="Settings">
