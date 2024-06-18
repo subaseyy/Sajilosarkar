@@ -26,6 +26,9 @@ public class IssueController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addIssue(@RequestBody IssueDto issueDto) {
+        if (issueDto.getStatus() == null) {
+            issueDto.setStatus(true); // or some other default status
+        }
         issueService.saveIssue(issueDto);
         return ResponseEntity.ok("Issue added successfully!");
     }
