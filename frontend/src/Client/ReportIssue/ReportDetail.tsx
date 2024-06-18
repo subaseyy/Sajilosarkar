@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from '../../Components/Sidebar/Sidebar';
 
 interface Report {
   id: number;

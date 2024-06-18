@@ -10,10 +10,10 @@ import { AuthProvider } from "./Components/Context/AuthContext";
 import Dashboard from "./Client/Dashboard";
 import SignUp from "./Auth/SignUp";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import NewIssueReport from "./Components/ReportIssue/NewIssueReport";
+import NewIssueReport from "./Client/ReportIssue/NewIssueReport";
 import Profile from "./Client/Profile";
-import ReportDetail from "./Components/ReportIssue/ReportDetail";
-import ReportList from "./Components/ReportIssue/ReportList";
+import ReportDetail from "./Client/ReportIssue/ReportDetail";
+import ReportList from "./Client/ReportIssue/ReportList";
 
 interface Report {
   id: number;
