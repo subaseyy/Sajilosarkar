@@ -36,6 +36,12 @@ public class UserController {
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
             response.put("username", loginDto.getEmail());
+
+            UserDto userDetail=userService.findUserByEmail(loginDto.getEmail());
+            response.put("name",userDetail.getFirstName());
+            response.put("role",userDetail.getRole());
+            
+
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

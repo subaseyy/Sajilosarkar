@@ -1,6 +1,9 @@
 package com.sajilosarkar.sajilosarkar.repository;
 
 import com.sajilosarkar.sajilosarkar.entity.User;
+
+import io.micrometer.common.lang.NonNull;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,12 +14,13 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     @Override
+    @NonNull
     Optional<User> findById(Integer id);
 
     Optional<User> findByEmail(String email);
     Optional<User> getUserByEmail(String email);
 
-
+    
     @Modifying
     @Query(value="insert into users_roles(role_id,user_id) values(?1,?2)",nativeQuery = true)
     void saveRoleUSer(Integer role_id,Integer user_id);

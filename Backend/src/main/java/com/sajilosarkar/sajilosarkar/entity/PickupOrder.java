@@ -44,4 +44,36 @@ public class PickupOrder {
     @OneToMany(mappedBy = "pickupOrder", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
+    public Long getOrderId(){
+         return orderId; 
+        }
+    public void setOrderId(Long orderId) {
+         this.orderId = orderId; 
+        }
+    public User getCustomer() {
+         return customer; 
+    }
+    public void setCustomer(User customer) { 
+        this.customer = customer; 
+    }
+    public Date getOrderDate() {
+         return orderDate; 
+    }
+    public void setOrderDate(Date orderDate) {
+         this.orderDate = orderDate; 
+    }
+    public Date getPickupTime() {
+         return pickupTime;
+     }
+    public void setPickupTime(Date pickupTime) {
+         this.pickupTime = pickupTime; 
+    }
+    public Double getTotalPrice() { 
+        return totalPrice; 
+    }
+    public void setTotalPrice(Double totalPrice) { 
+        this.totalPrice = totalPrice;
+     }
+
+
 }

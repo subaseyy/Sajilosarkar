@@ -1,35 +1,13 @@
-package com.sajilosarkar.sajilosarkar.entity;
-
-import jakarta.persistence.*;
-
+package com.sajilosarkar.sajilosarkar.dto;
 
 import java.util.Date;
 
-@Entity
-@Table(name = "Pricing")
-public class ScrapeItems {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pricing_id")
+public class PricingDTO {
     private Long pricingId;
-
-    @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
-
-    @Column(name = "price", nullable = false)
+    private Integer itemId;
     private Double price;
-
-    @Column(name = "discount")
     private Double discount;
-
-    @Column(name = "start_date")
-    @Temporal(TemporalType.DATE)
     private Date startDate;
-
-    @Column(name = "end_date")
-    @Temporal(TemporalType.DATE)
     private Date endDate;
 
     // Getters and Setters
@@ -41,12 +19,12 @@ public class ScrapeItems {
         this.pricingId = pricingId;
     }
 
-    public Item getItem() {
-        return item;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setItem(Item item) {
-        this.item = item;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     public Double getPrice() {
