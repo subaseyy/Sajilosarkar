@@ -1,83 +1,34 @@
 package com.sajilosarkar.sajilosarkar.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
-import java.util.Date;
-
+@Getter
+@Setter
 @Entity
-@Table(name = "Pricing")
+@NoArgsConstructor
+@Table(name = "scrape_items")
 public class ScrapeItems {
-    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pricing_id")
-    private Long pricingId;
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
+    @Column(nullable = false)
+    private String name;
+    
+    @Column(nullable = false)
+    private String price;
 
-    @Column(name = "price", nullable = false)
-    private Double price;
+    @Column(nullable = false)
+    private String description;
 
-    @Column(name = "discount")
-    private Double discount;
-
-    @Column(name = "start_date")
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
-
-    @Column(name = "end_date")
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
-
-    // Getters and Setters
-    public Long getPricingId() {
-        return pricingId;
-    }
-
-    public void setPricingId(Long pricingId) {
-        this.pricingId = pricingId;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
+    @Column(nullable = false)
+    private String category;
+    
 }

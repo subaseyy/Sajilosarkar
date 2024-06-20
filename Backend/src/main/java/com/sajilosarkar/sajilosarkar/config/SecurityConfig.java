@@ -19,7 +19,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // private final CustomUserDetailService customUserDetailService;
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     @Bean
@@ -34,13 +33,16 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/api/users/login", "/hello", "/refresh-token", "/api/users/register","/api/issue/add");
+        return (web) -> web.ignoring()
+                .requestMatchers("/api/users/login", "/hello", "/refresh-token", "/api/users/register", "/api/issue/add", "/error");
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
+                .requestMatchers("/error")
+                .permitAll() // Allow public access to /error endpoint
                 .anyRequest()
                 .authenticated()
                 .and()

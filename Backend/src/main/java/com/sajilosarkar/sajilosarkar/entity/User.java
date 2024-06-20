@@ -1,6 +1,7 @@
 package com.sajilosarkar.sajilosarkar.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,6 +41,7 @@ public class User implements UserDetails {
     private String phone;
 
     @Column(nullable = false)
+    @NotNull(message = "Address cannot be null")
     private String address;
 
     @Column(nullable = false)

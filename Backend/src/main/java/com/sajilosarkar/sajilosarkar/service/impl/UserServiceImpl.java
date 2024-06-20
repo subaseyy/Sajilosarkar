@@ -40,8 +40,12 @@ public class UserServiceImpl implements UserService {
         user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPhone(userDto.getPhone());
+        user.setAddress(  userDto.getStreetAddress1() +" "+ userDto.getStreetAddress2() +" "+userDto.getCity());
+        user.setImage(userDto.getImage() != null ? userDto.getImage() : "default.jpg");
+        user.setStatus(true);
         user = userRepository.save(user);
-        userRepository.saveRoleUSer(1, user.getId());
+        userRepository.saveRoleUser(1, user.getId());
     }
 
     @Override
@@ -92,7 +96,7 @@ public class UserServiceImpl implements UserService {
             User user = userOptional.get();
             user.getRoles().add(role); // Assuming roles are stored in a collection in User entity
             user = userRepository.save(user);
-            userRepository.saveRoleUSer(1, user.getId());
+            userRepository.saveRoleUser(1, user.getId());
             // Log info for debugging
             System.out.println("Assigned role with id " + roleId + " to user with id: " + userId);
         } else {
