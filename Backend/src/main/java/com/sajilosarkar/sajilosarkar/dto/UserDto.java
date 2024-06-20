@@ -37,6 +37,8 @@ public class UserDto {
 
     private String image;
 
+    private String role;
+
     public UserDto(String streetAddress1, String streetAddress2, String city, Integer id, String firstName, String lastName, String email, String password, String phone, String image) {
         this.id = id;
         this.firstName = firstName;
