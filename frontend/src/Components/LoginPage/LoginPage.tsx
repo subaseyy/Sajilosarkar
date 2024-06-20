@@ -7,6 +7,7 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string>('');
 
+
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -24,10 +25,11 @@ const LoginPage: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        login(data.token); // Store the token in context
-        setEmail('');
+        login(data.token, data.name); 
+
+
         setPassword('');
-        navigate('/dashboard'); // Redirect to a protected route
+        navigate('/dashboard'); 
       } else {
         setError('Invalid credentials, please try again.');
       }

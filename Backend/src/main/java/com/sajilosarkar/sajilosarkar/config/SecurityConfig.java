@@ -34,24 +34,19 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/api/users/login", "/hello", "/refresh-token", "/api/users/register", "/api/issue/add", "/error");
+                .requestMatchers("/api/users/login", "/hello", "/refresh-token", "/api/users/register", "/error");
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests()
-                .requestMatchers("/error")
-                .permitAll() // Allow public access to /error endpoint
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/issue/add").authenticated()              )
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
 }

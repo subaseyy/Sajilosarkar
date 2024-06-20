@@ -39,16 +39,15 @@ public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody User
     return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "User registered successfully!"));
 }
 
-    @PostMapping("/login")
+@PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDto loginDto) {
         try {
             String token = userService.authenticateUser(loginDto);
+            UserDto userDetail = userService.findUserByEmail(loginDto.getEmail());
             Map<String, String> response = new HashMap<>();
             response.put("token", token);
-            UserDto userDetail = userService.findUserByEmail(loginDto.getEmail());
             response.put("name", userDetail.getFirstName());
-            response.put("role", userDetail.getRole());
-
+            response.put("roles", userDetail.getRole());
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));

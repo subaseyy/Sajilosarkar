@@ -6,12 +6,11 @@ import com.sajilosarkar.sajilosarkar.entity.Role;
 import com.sajilosarkar.sajilosarkar.entity.User;
 import com.sajilosarkar.sajilosarkar.repository.RoleRepository;
 import com.sajilosarkar.sajilosarkar.repository.UserRepository;
-import org.springframework.security.authentication.BadCredentialsException;
 import com.sajilosarkar.sajilosarkar.service.JwtService;
 import com.sajilosarkar.sajilosarkar.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.LockedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -23,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    @Transactional
     @Override
     public void saveUser(UserDto userDto) {
         User user = new User();
@@ -41,11 +40,15 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setPhone(userDto.getPhone());
-        user.setAddress(  userDto.getStreetAddress1() +" "+ userDto.getStreetAddress2() +" "+userDto.getCity());
-        user.setImage(userDto.getImage() != null ? userDto.getImage() : "default.jpg");
+        user.setAddress(userDto.getStreetAddress1());
+        user.setImage(userDto.getImage());
         user.setStatus(true);
-        user = userRepository.save(user);
-        userRepository.saveRoleUser(1, user.getId());
+
+        Role defaultRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new IllegalArgumentException("Default role not found"));
+        user.getRoles().add(defaultRole);
+
+        userRepository.save(user);
     }
 
     @Override
@@ -89,16 +92,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void assignRoleToUser(Integer userId, Integer roleId) {
         Optional<User> userOptional = userRepository.findById(userId);
-        Role role = roleRepository.findById(Long.valueOf(roleId))
+        Role role = roleRepository.findById(roleId)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found with id: " + roleId));
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.getRoles().add(role); // Assuming roles are stored in a collection in User entity
-            user = userRepository.save(user);
-            userRepository.saveRoleUser(1, user.getId());
-            // Log info for debugging
-            System.out.println("Assigned role with id " + roleId + " to user with id: " + userId);
+            user.getRoles().add(role);
+            userRepository.save(user);
         } else {
             throw new IllegalArgumentException("User not found with id: " + userId);
         }
@@ -113,8 +113,8 @@ public class UserServiceImpl implements UserService {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             return jwtService.generateToken(userDetails);
         } catch (BadCredentialsException e) {
-            throw new LockedException("Invalid email or password", e);
-        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid email or password", e);
+        } catch (Exception e) {
             throw new RuntimeException("Authentication failed", e);
         }
     }
@@ -131,6 +131,12 @@ public class UserServiceImpl implements UserService {
         }
         userDto.setEmail(user.getEmail());
         userDto.setId(user.getId());
+
+        // Set role names as a comma-separated string
+        userDto.setRole(user.getRoles().stream()
+                .map(Role::getName)
+                .collect(Collectors.joining(", ")));
+
         return userDto;
     }
 }

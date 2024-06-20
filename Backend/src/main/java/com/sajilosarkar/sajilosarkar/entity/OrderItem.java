@@ -1,6 +1,5 @@
 package com.sajilosarkar.sajilosarkar.entity;
 
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
