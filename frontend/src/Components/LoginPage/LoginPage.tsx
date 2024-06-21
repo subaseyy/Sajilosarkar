@@ -23,14 +23,15 @@ const LoginPage: React.FC = () => {
         body: JSON.stringify({ email, password }),
       });
 
+
       if (response.ok) {
         const data = await response.json();
-        login(data.token, data.name); 
-
-
+        login(data.token, data.name, data.id); 
+        setEmail('');
         setPassword('');
         navigate('/dashboard'); 
-      } else {
+      } 
+      else {
         setError('Invalid credentials, please try again.');
       }
     } catch (error) {

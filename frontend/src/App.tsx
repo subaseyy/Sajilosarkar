@@ -12,8 +12,8 @@ import SignUp from "./Auth/SignUp";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import NewIssueReport from "./Client/ReportIssue/NewIssueReport";
 import Profile from "./Client/Profile";
-import ReportDetail from "./Client/ReportIssue/ReportDetail";
 import ReportList from "./Client/ReportIssue/ReportList";
+import ReportedIssues from "./Client/ReportIssue/ReportedIssues";
 
 interface Report {
   id: number;
@@ -86,7 +86,7 @@ const App: React.FC = () => {
             path="/dashboard/report-issue/report-detail/:id"
             element={
               <ProtectedRoute>
-                <ReportDetail reports={reports} onReply={handleReply} />
+                <ReportList reports={reports} onSelectReport={handleSelectReport} />
               </ProtectedRoute>
             }
           />
@@ -94,7 +94,7 @@ const App: React.FC = () => {
             path="/dashboard/report-issue/report-list"
             element={
               <ProtectedRoute>
-                <ReportList reports={reports} onSelectReport={handleSelectReport} />
+                <ReportedIssues />
               </ProtectedRoute>
             }
           />

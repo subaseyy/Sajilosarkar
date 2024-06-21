@@ -31,7 +31,8 @@ const NewIssueReport: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('jwt-token');
+    const userId = localStorage.getItem('user-id');
     if (!token) {
       alert('You are not authorized. Please login.');
       return;
@@ -41,9 +42,12 @@ const NewIssueReport: React.FC = () => {
     for (const key in formData) {
       issueData.append(key, formData[key as keyof FormData] as Blob | string);
     }
+    if (userId) {
+      issueData.append('userId', userId); 
+    }
 
     try {
-      const response = await fetch('https://your-api-url.com/api/issue/add', {
+      const response = await fetch('/api/issue/add', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -55,9 +59,8 @@ const NewIssueReport: React.FC = () => {
         throw new Error('Network response was not ok');
       }
 
-      const data = await response.json();
+      // const data = await response.json();
       alert('Issue added successfully!');
-      // Handle successful response (e.g., redirect or clear form)
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
       alert('Failed to submit issue.');
@@ -95,7 +98,7 @@ const NewIssueReport: React.FC = () => {
               <option>Parking</option>
               <option>Bus</option>
               <option>Garbage</option>
-              <option>Cycling</option>
+              <option>Cychng</option>
               <option>Walking</option>
               <option>Streetlights</option>
               <option>Footpath</option>
