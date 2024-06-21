@@ -1,42 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext';
+import { useAuth } from '../Context/AuthProvider';
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
 
-
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { loginAction } = useAuth();
 
   const submitUser = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-
-      if (response.ok) {
-        const data = await response.json();
-        login(data.token, data.name, data.id); 
-        setEmail('');
-        setPassword('');
-        navigate('/dashboard'); 
-      } 
-      else {
-        setError('Invalid credentials, please try again.');
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again later.');
-      console.error('Error:', error); // Log the error to console for debugging
+      await loginAction({ email, password });
+      setEmail('');
+      setPassword('');
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Invalid credentials, please try again.');
+      console.error('Login submission error:', err);
     }
   };
 
@@ -56,9 +40,7 @@ const LoginPage: React.FC = () => {
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
+              <label htmlFor="email-address" className="sr-only">Email address</label>
               <input
                 id="email-address"
                 name="email"
@@ -72,9 +54,7 @@ const LoginPage: React.FC = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
+              <label htmlFor="password" className="sr-only">Password</label>
               <input
                 id="password"
                 name="password"
@@ -97,15 +77,11 @@ const LoginPage: React.FC = () => {
                 type="checkbox"
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                Remember me
-              </label>
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">Remember me</label>
             </div>
 
             <div className="text-sm">
-              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                Forgot your password?
-              </a>
+              <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">Forgot your password?</a>
             </div>
           </div>
 

@@ -7,7 +7,7 @@ import Footer from "../Components/Footer/Footer";
 
 const Login: React.FC = () => {
 
-  const token = localStorage.getItem('jwt-token');
+  const token = localStorage.getItem('site');
 
 
   if  (token) {
@@ -47,7 +47,7 @@ const Login: React.FC = () => {
   <>
       < Navbar/>
 
-  < LoginPage />
+    < LoginPage />
           <Footer />
 
   </>

@@ -1,5 +1,6 @@
 package com.sajilosarkar.sajilosarkar.service;
 
+import com.sajilosarkar.sajilosarkar.dto.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -48,6 +49,7 @@ public class JwtService {
                 .collect(Collectors.toList()));
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Example expiration time
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

@@ -10,11 +10,17 @@ import com.sajilosarkar.sajilosarkar.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class IssueServiceImpl implements IssueService {
+
+    private final String UPLOAD_DIRECTORY = new StringBuilder().append(System.getProperty("user.dir")).append("/media/images/issue_raise").toString();
 
     @Autowired
     private IssueRepository issueRepository;
@@ -23,7 +29,7 @@ public class IssueServiceImpl implements IssueService {
     private UserRepository userRepository;
 
     @Override
-    public void saveIssue(IssueDto issueDto) {
+    public void saveIssue(IssueDto issueDto) throws IOException {
         Issue issue = convertToEntity(issueDto);
         issueRepository.save(issue);
     }
@@ -151,7 +157,7 @@ public class IssueServiceImpl implements IssueService {
                 .collect(Collectors.toList());
     }
 
-    private Issue convertToEntity(IssueDto issueDto) {
+    private Issue convertToEntity(IssueDto issueDto) throws IOException {
         // Implement your conversion logic here
         Issue issue = new Issue();
         issue.setId(issueDto.getId());
@@ -161,7 +167,22 @@ public class IssueServiceImpl implements IssueService {
         issue.setDescription(issueDto.getDescription());
         issue.setPriority(issueDto.getPriority());
         issue.setStatus(issueDto.getStatus());
-        issue.setImage(issueDto.getImage());
+        
+        if (issueDto.getUserId() != null) {
+            User user = userRepository.findById(issueDto.getUserId())
+                                      .orElseThrow(() -> new RuntimeException("User not found"));
+            issue.setUser(user);
+        }
+
+        if (issueDto.getImage() != null) {
+
+            StringBuilder fileNames = new StringBuilder();
+            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, issueDto.getImage().getOriginalFilename());
+            fileNames.append(issueDto.getImage().getOriginalFilename());
+            Files.write(fileNameAndPath, issueDto.getImage().getBytes());
+            issue.setImage(issueDto.getImage().getOriginalFilename());
+
+        }
         // Set user and role here as needed
         return issue;
     }
@@ -176,7 +197,7 @@ public class IssueServiceImpl implements IssueService {
         issueDto.setDescription(issue.getDescription());
         issueDto.setPriority(issue.getPriority());
         issueDto.setStatus(issue.getStatus());
-        issueDto.setImage(issue.getImage());
+        issueDto.setGetImage(issue.getImage());
         // Set user and role here as needed
         return issueDto;
     }

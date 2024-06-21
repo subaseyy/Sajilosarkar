@@ -48,6 +48,7 @@ public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody User
             response.put("token", token);
             response.put("name", userDetail.getFirstName());
             response.put("roles", userDetail.getRole());
+            response.put("id", String.valueOf(userDetail.getId()));
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid credentials"));

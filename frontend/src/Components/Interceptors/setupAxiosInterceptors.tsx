@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext'; // Adjust the import path as necessary
+import { useAuth } from '../Context/AuthContext.provider'; // Adjust the import path as necessary
 import { useEffect } from 'react';
 
 const useAxiosInterceptors = () => {

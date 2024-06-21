@@ -10,6 +10,7 @@ import com.sajilosarkar.sajilosarkar.service.IssueService;
 import org.springframework.http.ResponseEntity;
 
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class IssueController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addIssue(@RequestBody IssueDto issueDto) {
+    public ResponseEntity<String> addIssue(@ModelAttribute IssueDto issueDto) throws IOException {
         if (issueDto.getStatus() == null) {
             issueDto.setStatus(true); // or some other default status
         }

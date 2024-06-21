@@ -3,10 +3,11 @@ package com.sajilosarkar.sajilosarkar.service;
 import com.sajilosarkar.sajilosarkar.dto.IssueDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IssueService {
-    void saveIssue(IssueDto issueDto);
+    void saveIssue(IssueDto issueDto) throws IOException;
     IssueDto findIssueById(Integer id);
     List<IssueDto> findAllIssues();
     void updateIssueStatus(Integer id, Boolean status);

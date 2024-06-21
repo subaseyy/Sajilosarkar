@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import NavImg from '../../../public/SajiloSarkar.svg';
-import axios from 'axios';
 
-// Define an interface that extends JwtPayload to include username
 interface DecodedToken extends JwtPayload {
-  username: string;
+  name: string;
   sub: string;
 }
 
@@ -14,53 +12,39 @@ const Navbar: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
-  const [username, setUsername] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('jwt-token');
-    const name = localStorage.getItem('first-name');
-    if (token) {
-      setToken(token);
-      setName(name);
-
-      if (token.split('.').length === 3) {
-        try {
-          const decodedToken: DecodedToken = jwtDecode(token);
-          setUsername(decodedToken.sub); 
-        } catch (error) {
-          console.error('Invalid token:', error);
-          localStorage.removeItem('jwt-token');
-        localStorage.removeItem('first-name');
-          setToken(null);
-          setUsername(null);
-          setName(null);
-        }
-      } else {
-        console.error('Invalid token format');
-        localStorage.removeItem('jwt-token');
-        localStorage.removeItem('first-name');
-        setUsername(null);
+    const storedToken = localStorage.getItem('site');
+    if (storedToken) {
+      setToken(storedToken);
+      try {
+        const decodedToken: DecodedToken = jwtDecode(storedToken);
+        setName(decodedToken.sub );
+      } catch (error) {
+        console.error('Invalid token:', error);
+        localStorage.removeItem('site');
+        setToken(null);
+        setName(null);
       }
     }
-
-  }, [token, name]); 
+  }, [token, name]);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
   const handleLogout = () => {
-    localStorage.removeItem('jwt-token');
-    localStorage.removeItem('first-name');
+    localStorage.removeItem('site');
+    localStorage.removeItem("Name");
+    localStorage.removeItem("Role");
+    localStorage.removeItem("userId");
     setToken(null);
-    setUsername(null);
     setName(null);
     navigate('/login');
   };
 
   return (
     <nav className="flex justify-around h-16 text-xl items-center bg-accent-1 text-white">
-     
-     <div className="flex items-center text-3xl font-extrabold">
+      <div className="flex items-center text-3xl font-extrabold">
         <NavLink to="/">
           <img src={NavImg} className="h-16 p-2" alt="Sajilo Sarkar Logo" />
         </NavLink>
@@ -96,7 +80,7 @@ const Navbar: React.FC = () => {
         {token ? (
           <div className="relative flex items-center">
             <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>
-              Hi, { name || 'User'}
+              Hi, {name || 'User'}
             </span>
             <div className="relative">
               <div className="cursor-pointer" onClick={toggleDropdown}>
