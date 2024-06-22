@@ -4,7 +4,7 @@ import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 
 const SignUp: React.FC = () => {
-  const token = localStorage.getItem("site");
+  const token = localStorage.getItem("token");
 
   if (token) {
     return (
@@ -36,7 +36,6 @@ const SignUp: React.FC = () => {
           </div>
         </div>
         <Footer />
-
       </>
     );
   }

@@ -1,46 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-import NavImg from '../../../public/SajiloSarkar.svg';
-
-interface DecodedToken extends JwtPayload {
-  name: string;
-  sub: string;
-}
+import NavImg from '../../../public/SajiloSarkar.svg'; 
+import { useAuth } from '../Context/AuthProvider';
 
 const Navbar: React.FC = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-  const [name, setName] = useState<string | null>(null);
+  const { user, logOut } = useAuth(); 
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('site');
-    if (storedToken) {
-      setToken(storedToken);
-      try {
-        const decodedToken: DecodedToken = jwtDecode(storedToken);
-        setName(decodedToken.sub );
-      } catch (error) {
-        console.error('Invalid token:', error);
-        localStorage.removeItem('site');
-        setToken(null);
-        setName(null);
-      }
-    }
-  }, [token, name]);
+  const handleLogout = () => {
+    logOut();
+    navigate('/login');
+  }
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-
-  const handleLogout = () => {
-    localStorage.removeItem('site');
-    localStorage.removeItem("Name");
-    localStorage.removeItem("Role");
-    localStorage.removeItem("userId");
-    setToken(null);
-    setName(null);
-    navigate('/login');
-  };
 
   return (
     <nav className="flex justify-around h-16 text-xl items-center bg-accent-1 text-white">
@@ -77,10 +49,10 @@ const Navbar: React.FC = () => {
         </ul>
       </div>
       <div>
-        {token ? (
+        {user ? (
           <div className="relative flex items-center">
             <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>
-              Hi, {name || 'User'}
+              Hi, {user.name || 'User'}
             </span>
             <div className="relative">
               <div className="cursor-pointer" onClick={toggleDropdown}>

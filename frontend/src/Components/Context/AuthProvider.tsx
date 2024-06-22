@@ -1,103 +1,85 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, createContext, useContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-// Define the shape of the context value
-interface AuthContextType {
-  token: string;
-  user: User | null;
-  loginAction: (data: LoginData) => Promise<void>;
-  logOut: () => void;
-}
-
-// Define the shape of the user object and login data
 interface User {
-  id: number;
+  roles: string[];
   name: string;
-  email: string;
-  roles: string;
+  id: string;
 }
 
-interface LoginData {
-  email: string;
-  password: string;
+interface AuthContextType {
+  user: User | null;
+  loginAction: (credentials: { username: string; password: string }) => Promise<void>;
+  logOut: () => void; // Add logout function to AuthContextType
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+};
 
-const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string>(localStorage.getItem("site") || "");
- 
-  
+  const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const loginAction = async (data: LoginData): Promise<void> => {
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
+
+  const loginAction = async (credentials: { username: string; password: string }) => {
     try {
-      const response = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorResponse = await response.json();
-        console.error('Login error response:', errorResponse);
-        throw new Error(errorResponse.error || 'Failed to login');
-      }
-
-      const res = await response.json();
-
-      console.log('Login successful response:', res);
-
-      if (res.token && res.name && res.roles && res.id) {
-        const userDetail: User = {
-          id: parseInt(res.id),
-          name: res.name,
-          email: data.email,
-          roles: res.roles,
-        };
-
-        setUser(userDetail);
-        setToken(res.token);
-        localStorage.setItem("site", res.token);
-        navigate("/dashboard");
-      } else {
-        throw new Error('Invalid response data');
-      }
-    } catch (err) {
-      console.error('Login error:', err);
-      throw err;
+      const response = await axios.post("/api/users/login", credentials);
+      const { roles, name, id, token } = response.data;
+      setToken(token);
+      localStorage.setItem("token", token);
+      setUser({ roles, name, id });
+      navigate("/dashboard");
+      // fetchUserDetails(token);
+    } catch (error) {
+      console.error("Login failed", error);
     }
   };
 
+  const fetchUserDetails = async (token: string) => {
+    try {
+      const response = await axios.get("/api/users/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUser(response.data);
+    } catch (error) {
+      console.error("Error fetching user details", error);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchUserDetails(token);
+    }
+  }, [token]);
+
   const logOut = () => {
     setUser(null);
-    setToken("");
-    localStorage.removeItem("site");
-    
-
-    navigate("/login");
+    setToken(null);
+    localStorage.removeItem("token");
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
+    <AuthContext.Provider value={{ user, loginAction, logOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export default AuthProvider;
-
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
-};

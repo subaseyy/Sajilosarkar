@@ -3,9 +3,11 @@ package com.sajilosarkar.sajilosarkar.controller;
 import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
 import com.sajilosarkar.sajilosarkar.service.UserService;
+import com.sajilosarkar.sajilosarkar.service.JwtService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -21,6 +23,9 @@ import java.util.Map;
 @RequestMapping("/api/users")
 @Validated
 public class UserController {
+
+    @Autowired
+    private JwtService jwtService;
 
     private final UserService userService;
 
@@ -65,6 +70,16 @@ public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody User
     public ResponseEntity<UserDto> findUserById(@PathVariable Integer id) {
         UserDto userDto = userService.findUserById(id);
         return userDto != null ? ResponseEntity.ok(userDto) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDto> findUserByUsername(@RequestHeader("Authorization") String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7); // Remove "Bearer " prefix
+        }
+        String username = jwtService.extractUsername(token);
+        UserDto userDto = userService.findUserByEmail(username);
+        return userDto != null ? ResponseEntity.ok(userDto) : ResponseEntity.status(403).build();
     }
 
     @GetMapping("/list")

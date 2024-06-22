@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Sidebar from "../../Components/Sidebar/Sidebar";
+import { useAuth } from '../../Components/Context/AuthProvider';
 
 interface FormData {
   title: string;
@@ -19,6 +20,8 @@ const NewIssueReport: React.FC = () => {
     priority: 'Low',
     image: null,
   });
+  const { user } = useAuth(); 
+  const userId = user?.id;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, files } = e.target as HTMLInputElement;
@@ -31,8 +34,7 @@ const NewIssueReport: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const token = localStorage.getItem('jwt-token');
-    const userId = localStorage.getItem('user-id');
+    const token = localStorage.getItem('token');
     if (!token) {
       alert('You are not authorized. Please login.');
       return;

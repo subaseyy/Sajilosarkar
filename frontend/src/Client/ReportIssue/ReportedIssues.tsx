@@ -14,7 +14,7 @@ interface Report {
 const ReportedIssues: React.FC = () => {
   const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
-  const token = localStorage.getItem('jwt-token');
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (!token) {

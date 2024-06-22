@@ -15,20 +15,15 @@ import ReportList from "./Client/ReportIssue/ReportList";
 import ReportedIssues from "./Client/ReportIssue/ReportedIssues";
 import AuthProvider from "./Components/Context/AuthProvider";
 
-
-
 const App: React.FC = () => {
-
   const [reports, setReports] = React.useState([]);
   const handleSelectReport = (report: any) => {
     console.log(report);
   };
-  
 
   return (
-    
-      <Router>
-        < AuthProvider >
+    <Router>
+      <AuthProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -78,8 +73,8 @@ const App: React.FC = () => {
             }
           />
         </Routes>
-        </AuthProvider>
-      </Router>
+      </AuthProvider>
+    </Router>
   );
 };
 
