@@ -1,7 +1,7 @@
 package com.sajilosarkar.sajilosarkar.service;
-
 import com.sajilosarkar.sajilosarkar.dto.IssueDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
+// import com.sajilosarkar.sajilosarkar.entity.Issue;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,6 +19,7 @@ public interface IssueService {
     List<IssueDto> findIssueByPriority(String priority);
     List<IssueDto> findIssueByStatus(Boolean status);
     List<IssueDto> findIssueByUser(UserDto userDto);
+    List<IssueDto> findIssueByUserId(Integer userId); // New method
     List<IssueDto> findIssueByUserAndTitle(UserDto userDto, String title);
     List<IssueDto> findIssueByUserAndCategory(UserDto userDto, String category);
     List<IssueDto> findIssueByUserAndLocation(UserDto userDto, String location);

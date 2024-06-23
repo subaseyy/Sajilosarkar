@@ -22,7 +22,6 @@ const NewIssueReport: React.FC = () => {
   });
   const { user } = useAuth(); 
   const userId = user?.id;
-  console.log(userId);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, files } = e.target as HTMLInputElement;
@@ -43,7 +42,9 @@ const NewIssueReport: React.FC = () => {
 
     const issueData = new FormData();
     for (const key in formData) {
-      issueData.append(key, formData[key as keyof FormData] as Blob | string);
+      if (formData[key as keyof FormData] !== null) {
+        issueData.append(key, formData[key as keyof FormData] as Blob | string);
+      }
     }
     if (userId) {
       issueData.append('userId', userId); 
@@ -62,7 +63,6 @@ const NewIssueReport: React.FC = () => {
         throw new Error('Network response was not ok');
       }
 
-      // const data = await response.json();
       alert('Issue added successfully!');
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
@@ -77,7 +77,7 @@ const NewIssueReport: React.FC = () => {
         <h1 className="text-3xl font-bold mb-6 text-center">Report an Issue</h1>
         <h2 className="text-2xl font-semibold mb-4">New Report</h2>
         <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
+        <div>
             <label className="block text-sm font-medium text-gray-700">Title</label>
             <input
               type="text"
@@ -148,7 +148,6 @@ const NewIssueReport: React.FC = () => {
               name="image"
               onChange={handleChange}
               className="mt-1 block w-full bg-gray-50 border border-gray-300 rounded-md py-2 px-3 shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              multiple
             />
           </div>
           <div>

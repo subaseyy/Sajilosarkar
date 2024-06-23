@@ -21,6 +21,8 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
 
     List<Issue> findByUser(User user);
 
+    List<Issue> findByUserId(Integer Id);
+
     List<Issue> findByUserAndTitle(User user, String title);
 
     List<Issue> findByUserAndCategory(User user, String category);

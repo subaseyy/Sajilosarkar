@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import com.sajilosarkar.sajilosarkar.dto.IssueDto;
 import com.sajilosarkar.sajilosarkar.service.IssueService;
 
-
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.http.ResponseEntity;
 
 
@@ -48,6 +48,13 @@ public class IssueController {
     @GetMapping("/list")
     public ResponseEntity<List<IssueDto>> getAllIssues() {
         List<IssueDto> issues = issueService.findAllIssues();
+        return ResponseEntity.ok(issues);
+    }
+
+    @GetMapping("/list/{id}")
+    public ResponseEntity<List<IssueDto>> getIssuesByUser(Authentication authentication) {
+        Integer userId = Integer.parseInt(authentication.getName());
+        List<IssueDto> issues = issueService.findIssueByUserId(userId);
         return ResponseEntity.ok(issues);
     }
     
