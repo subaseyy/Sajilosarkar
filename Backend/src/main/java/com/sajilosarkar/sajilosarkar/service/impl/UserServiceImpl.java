@@ -18,7 +18,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+// import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +32,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/media/images/users";
+
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -34,21 +41,38 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveUser(UserDto userDto) {
+        User user = convertToEntity(userDto);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User convertToEntity(UserDto userDto) {
         User user = new User();
+        user.setId(userDto.getId());
         user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setPhone(userDto.getPhone());
         user.setAddress(userDto.getStreetAddress1());
-        user.setImage(userDto.getImage());
         user.setStatus(true);
 
-        Role defaultRole = roleRepository.findByName("ROLE_USER")
+        Role defaultRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new IllegalArgumentException("Default role not found"));
         user.getRoles().add(defaultRole);
 
-        userRepository.save(user);
+        if (userDto.getImage() != null) {
+            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, userDto.getImage().getOriginalFilename());
+            try {
+                Files.write(fileNameAndPath, userDto.getImage().getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            user.setImage(userDto.getImage().getOriginalFilename());
+        }
+
+        return user;
     }
 
     @Override
@@ -77,6 +101,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateUserPassword(Integer id, String newPassword) {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
@@ -89,7 +114,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void assignRoleToUser(Integer userId, Integer roleId) {
         Optional<User> userOptional = userRepository.findById(userId);
         Role role = roleRepository.findById(roleId)

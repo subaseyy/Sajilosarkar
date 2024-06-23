@@ -188,7 +188,6 @@ public class IssueServiceImpl implements IssueService {
     }
 
     private IssueDto convertToDto(Issue issue) {
-        // Implement your conversion logic here
         IssueDto issueDto = new IssueDto();
         issueDto.setId(issue.getId());
         issueDto.setTitle(issue.getTitle());
@@ -198,7 +197,6 @@ public class IssueServiceImpl implements IssueService {
         issueDto.setPriority(issue.getPriority());
         issueDto.setStatus(issue.getStatus());
         issueDto.setGetImage(issue.getImage());
-        // Set user and role here as needed
         return issueDto;
     }
 }

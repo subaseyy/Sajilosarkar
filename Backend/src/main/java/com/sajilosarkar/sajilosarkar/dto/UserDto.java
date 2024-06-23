@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.validation.constraints.NotEmpty;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.Email;
 
 @Getter
@@ -35,20 +38,9 @@ public class UserDto {
     @NotEmpty(message = "City should not be empty")
     private String city;
 
-    private String image;
+    private MultipartFile image;
+    private String getImage;
 
     private String role;
 
-    public UserDto(String streetAddress1, String streetAddress2, String city, Integer id, String firstName, String lastName, String email, String password, String phone, String image) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.streetAddress1 = streetAddress1;
-        this.streetAddress2 = streetAddress2;
-        this.city = city;
-        this.image = image;
-    }
 }

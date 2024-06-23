@@ -9,6 +9,7 @@ interface User {
 }
 
 interface AuthContextType {
+  token: string | null;
   user: User | null;
   loginAction: (credentials: { username: string; password: string }) => Promise<void>;
   logOut: () => void; // Add logout function to AuthContextType
@@ -50,24 +51,24 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }
   };
 
-  const fetchUserDetails = async (token: string) => {
-    try {
-      const response = await axios.get("/api/users/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setUser(response.data);
-    } catch (error) {
-      console.error("Error fetching user details", error);
-    }
-  };
+  // const fetchUserDetails = async (token: string) => {
+  //   try {
+  //     const response = await axios.get("/api/users/me", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     setUser(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching user details", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    if (token) {
-      fetchUserDetails(token);
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     fetchUserDetails(token);
+  //   }
+  // }, [token]);
 
   const logOut = () => {
     setUser(null);
@@ -76,7 +77,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginAction, logOut }}>
+    <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
       {children}
     </AuthContext.Provider>
   );

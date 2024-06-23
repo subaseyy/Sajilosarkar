@@ -10,6 +10,7 @@ import com.sajilosarkar.sajilosarkar.service.IssueService;
 import org.springframework.http.ResponseEntity;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -26,10 +27,20 @@ public class IssueController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addIssue(@ModelAttribute IssueDto issueDto) throws IOException {
-        if (issueDto.getStatus() == null) {
-            issueDto.setStatus(true); // or some other default status
+    public ResponseEntity<String> addIssue(@ModelAttribute IssueDto issueDto, HttpServletRequest request) throws IOException {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body("Unauthorized");
         }
+
+        String token = authorizationHeader.substring(7);
+
+        // Validate the token here or assume it's validated by JwtAuthenticationFilter
+
+        if (issueDto.getStatus() == null) {
+            issueDto.setStatus(true);
+        }
+
         issueService.saveIssue(issueDto);
         return ResponseEntity.ok("Issue added successfully!");
     }

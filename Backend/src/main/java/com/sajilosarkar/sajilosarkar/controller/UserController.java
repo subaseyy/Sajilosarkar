@@ -1,5 +1,6 @@
 package com.sajilosarkar.sajilosarkar.controller;
 
+// import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
 import com.sajilosarkar.sajilosarkar.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,21 +30,35 @@ public class UserController {
     private JwtService jwtService;
 
     private final UserService userService;
+    // private final ObjectMapper objectMapper;
 
+    // public UserController(UserService userService, ObjectMapper objectMapper) {
     public UserController(UserService userService) {
         this.userService = userService;
+        // this.objectMapper = objectMapper;
     }
 
     @PostMapping("/register")
-public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
-    if (result.hasErrors()) {
-        Map<String, String> errors = new HashMap<>();
-        result.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        return ResponseEntity.badRequest().body(errors);
+    public ResponseEntity<Map<String, String>> registerUser(
+            @RequestPart("user") String user,
+            @RequestPart("image") MultipartFile image,
+            BindingResult bindingResult) throws Exception {
+        
+        if (bindingResult.hasErrors()) {
+            // handle validation errors
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error ->
+                    errors.put(error.getField(), error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        // Handle the registration logic here
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User registered successfully");
+        return ResponseEntity.ok(response);
     }
-    userService.saveUser(userDto);
-    return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "User registered successfully!"));
-}
+
 
 @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDto loginDto) {

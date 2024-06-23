@@ -4,13 +4,20 @@ import NavImg from '../../../public/SajiloSarkar.svg';
 import { useAuth } from '../Context/AuthProvider';
 
 const Navbar: React.FC = () => {
-  const { user, logOut } = useAuth(); 
+  const { token, user, logOut } = useAuth(); 
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const navigate = useNavigate();
+
   const handleLogout = () => {
     logOut();
     navigate('/login');
   }
+
+  function init() {
+    logOut();
+  }
+
+  console.log(user);
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
@@ -52,7 +59,7 @@ const Navbar: React.FC = () => {
         {user ? (
           <div className="relative flex items-center">
             <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>
-              Hi, {user.name || 'User'}
+              Hi, {user?.name || 'User'}
             </span>
             <div className="relative">
               <div className="cursor-pointer" onClick={toggleDropdown}>
@@ -92,6 +99,7 @@ const Navbar: React.FC = () => {
           </div>
         ) : (
           <>
+            {window.addEventListener("load", init)}
             <NavLink to="/login" className="px-4 text-base border rounded-full mx-1 py-1 hover:bg-accent-2">
               Login
             </NavLink>

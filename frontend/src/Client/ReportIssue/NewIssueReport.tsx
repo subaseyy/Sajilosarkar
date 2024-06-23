@@ -22,6 +22,7 @@ const NewIssueReport: React.FC = () => {
   });
   const { user } = useAuth(); 
   const userId = user?.id;
+  console.log(userId);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, files } = e.target as HTMLInputElement;
