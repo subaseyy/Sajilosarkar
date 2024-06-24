@@ -11,15 +11,15 @@ import SignUp from "./Auth/SignUp";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import NewIssueReport from "./Client/ReportIssue/NewIssueReport";
 import Profile from "./Client/Profile";
-import ReportList from "./Client/ReportIssue/ReportList";
+
 import ReportedIssues from "./Client/ReportIssue/ReportedIssues";
 import AuthProvider from "./Components/Context/AuthProvider";
+import ReportDetail from "./Client/ReportIssue/ReportDetail";
+
 
 const App: React.FC = () => {
-  const [reports, setReports] = React.useState([]);
-  const handleSelectReport = (report: any) => {
-    console.log(report);
-  };
+
+ 
 
   return (
     <Router>
@@ -52,10 +52,9 @@ const App: React.FC = () => {
             path="/dashboard/report-issue/report-detail/:id"
             element={
               <ProtectedRoute>
-                <ReportList reports={reports} onSelectReport={handleSelectReport} />
-              </ProtectedRoute>
-            }
-          />
+                <ReportDetail /> 
+               </ProtectedRoute>
+            }  /> 
           <Route
             path="/dashboard/report-issue/report-list"
             element={

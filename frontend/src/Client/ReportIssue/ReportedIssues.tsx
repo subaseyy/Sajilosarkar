@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../Components/Sidebar/Sidebar';
-import ReportList from './ReportList';
-import { useAuth } from '../../Components/Context/AuthProvider';
 
 interface Report {
   id: number;
@@ -15,7 +13,7 @@ interface Report {
 const ReportedIssues: React.FC = () => {
   const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
-  const token  = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     if (!token) {
@@ -25,7 +23,6 @@ const ReportedIssues: React.FC = () => {
     }
 
     const userId = localStorage.getItem('id');
-    
 
     document.title = 'Reported Issues';
 
@@ -57,7 +54,20 @@ const ReportedIssues: React.FC = () => {
     <div className="flex">
       <Sidebar />
       <div className="w-full bg-white p-8 rounded-lg shadow-md">
-        <ReportList reports={reports} onSelectReport={handleSelectReport} />
+        <h1 className="text-2xl font-bold mb-4">Reported Issues</h1>
+        {reports.length === 0 ? (
+          <p>No reported issues found.</p>
+        ) : (
+          <ul>
+            {reports.map(report => (
+              <li key={report.id} className="mb-4 p-4 border rounded cursor-pointer" onClick={() => handleSelectReport(report.id)}>
+                <h2 className="text-xl font-semibold">{report.title}</h2>
+                <p className="text-gray-600">{report.location}</p>
+                <p className="mt-2">{report.description}</p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

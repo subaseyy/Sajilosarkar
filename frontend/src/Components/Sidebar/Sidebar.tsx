@@ -40,11 +40,7 @@ const Sidebar: React.FC = () => {
             to="/dashboard/report-issue/report-list"
           />
         </MenuItem>
-        <MenuItem title="Browse Issues">
-          <MenuItem title="By Category" to="/issues/browse/category" />
-          <MenuItem title="By Location" to="/issues/browse/location" />
-          <MenuItem title="By Status" to="/issues/browse/status" />
-        </MenuItem>
+       
 
         <MenuItem title="Help & Support">
           <MenuItem title="FAQ" to="/faq" />

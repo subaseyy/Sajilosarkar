@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/issue")
 public class IssueController {
@@ -66,25 +67,36 @@ public class IssueController {
         return ResponseEntity.ok(issues);
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("{id}/delete")
     public ResponseEntity<String> deleteIssue(@PathVariable Integer id) {
         issueService.deleteIssueById(id);
         return ResponseEntity.ok("Issue deleted successfully!");
     }
 
-    @GetMapping("/list/{title}")
+    @GetMapping("details/{id}")
+    public ResponseEntity<IssueDto> getIssueDetails(@PathVariable Integer id) {
+        IssueDto issueDto = issueService.findIssueById(id);
+        if (issueDto != null) {
+            return ResponseEntity.ok(issueDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+
+    @GetMapping("list/{title}")
     public ResponseEntity<List<IssueDto>> getIssueByTitle(@RequestParam String title) {
         List<IssueDto> issues = issueService.findIssueByTitle(title);
         return ResponseEntity.ok(issues);
     }
 
-    @GetMapping("/list/{location}")
+    @GetMapping("list/{location}")
     public ResponseEntity<List<IssueDto>> getIssueByLocation(@RequestParam String location) {
         List<IssueDto> issues = issueService.findIssueByLocation(location);
         return ResponseEntity.ok(issues);
     }
 
-    @GetMapping("/list/{status}")
+    @GetMapping("list/{status}")
     public ResponseEntity<List<IssueDto>> getIssueByStatus(@RequestParam Boolean status) {
         List<IssueDto> issues = issueService.findIssueByStatus(status);
         return ResponseEntity.ok(issues);
