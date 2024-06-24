@@ -1,7 +1,7 @@
 package com.sajilosarkar.sajilosarkar.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 import com.sajilosarkar.sajilosarkar.entity.OrderItem;
 import com.sajilosarkar.sajilosarkar.repository.OrderItemRepository;

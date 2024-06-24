@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Sidebar from "../../Components/Sidebar/Sidebar";
-import { useAuth } from '../../Components/Context/AuthProvider';
+// import { useAuth } from '../../Components/Context/AuthProvider';
 
 interface FormData {
   title: string;
@@ -20,9 +20,8 @@ const NewIssueReport: React.FC = () => {
     priority: 'Low',
     image: null,
   });
-  const { user } = useAuth(); 
-  const userId = user?.id;
 
+  const userId = localStorage.getItem('id');
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, files } = e.target as HTMLInputElement;
     setFormData((prevData) => ({

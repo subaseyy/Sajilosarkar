@@ -3,6 +3,8 @@ package com.sajilosarkar.sajilosarkar.config;
 
 import com.sajilosarkar.sajilosarkar.service.JwtService;
 import com.sajilosarkar.sajilosarkar.service.impl.CustomUserDetailService;
+
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -75,8 +77,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //
 //    }
 
+    @SuppressWarnings("null")
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain chain)
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
 

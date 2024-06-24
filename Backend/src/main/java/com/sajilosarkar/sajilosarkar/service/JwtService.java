@@ -1,6 +1,6 @@
 package com.sajilosarkar.sajilosarkar.service;
 
-import com.sajilosarkar.sajilosarkar.dto.UserDto;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -74,6 +74,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> extractRoles(String token) {
         Claims claims = extractAllClaims(token);
         return claims.get("roles", List.class);

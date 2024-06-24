@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 
 interface User {
   roles: string[];
@@ -12,7 +12,7 @@ interface AuthContextType {
   token: string | null;
   user: User | null;
   loginAction: (credentials: { username: string; password: string }) => Promise<void>;
-  logOut: () => void; // Add logout function to AuthContextType
+  logOut: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,6 +29,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -37,43 +43,46 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }
   }, []);
 
+  useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      if (
+        event.key === "token" ||
+        event.key === "firstname" ||
+        event.key === "id"
+      ) {
+        logOut();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
   const loginAction = async (credentials: { username: string; password: string }) => {
     try {
       const response = await axios.post("/api/users/login", credentials);
       const { roles, name, id, token } = response.data;
       setToken(token);
       localStorage.setItem("token", token);
+      localStorage.setItem("firstname", name);
+      localStorage.setItem("id", id);
       setUser({ roles, name, id });
       navigate("/dashboard");
-      // fetchUserDetails(token);
     } catch (error) {
       console.error("Login failed", error);
     }
   };
 
-  // const fetchUserDetails = async (token: string) => {
-  //   try {
-  //     const response = await axios.get("/api/users/me", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     setUser(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching user details", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (token) {
-  //     fetchUserDetails(token);
-  //   }
-  // }, [token]);
-
   const logOut = () => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("firstname");
+    localStorage.removeItem("id");
+    // Navigate after logout can be handled outside via callback
+    navigate("/login");
   };
 
   return (

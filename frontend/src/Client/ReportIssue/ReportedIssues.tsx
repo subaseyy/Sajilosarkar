@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import ReportList from './ReportList';
+import { useAuth } from '../../Components/Context/AuthProvider';
 
 interface Report {
   id: number;
@@ -14,7 +15,7 @@ interface Report {
 const ReportedIssues: React.FC = () => {
   const navigate = useNavigate();
   const [reports, setReports] = useState<Report[]>([]);
-  const token = localStorage.getItem('token');
+  const token  = localStorage.getItem('token');
 
   useEffect(() => {
     if (!token) {
@@ -23,9 +24,12 @@ const ReportedIssues: React.FC = () => {
       return;
     }
 
+    const userId = localStorage.getItem('id');
+    
+
     document.title = 'Reported Issues';
 
-    fetch('/api/reports/list', {
+    fetch(`/api/issue/${userId}/list`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -37,7 +41,7 @@ const ReportedIssues: React.FC = () => {
         }
         return response.json();
       })
-      .then((data: Report[]) => { // Ensure data is typed correctly as Report[]
+      .then((data: Report[]) => {
         setReports(data);
       })
       .catch(error => {

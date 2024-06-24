@@ -1,4 +1,5 @@
 import React from 'react';
+import Sidebar from '../../Components/Sidebar/Sidebar';
 
 interface Report {
   id: number;
@@ -19,8 +20,13 @@ const ReportList: React.FC<ReportListProps> = ({ reports, onSelectReport }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Reported Issues</h2>
+    <>
+    <div className="flex">
+      <div>
+        <Sidebar />
+      </div>
+    <div className="w-full bg-white rounded-lg shadow-md">
+      <h2 className="text-2xl text-center mt-5 font-bold mb-4">Reported Issues</h2>
       <ul className="space-y-2">
         {reports.map((report) => (
           <li 
@@ -34,6 +40,9 @@ const ReportList: React.FC<ReportListProps> = ({ reports, onSelectReport }) => {
         ))}
       </ul>
     </div>
+    </div>
+    </>
+
   );
 };
 

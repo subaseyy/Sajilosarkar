@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -37,17 +39,25 @@ public class SecurityConfig {
                 .requestMatchers("/api/users/login", "/hello", "/refresh-token", "/api/users/register", "/error");
     }
 
+    /**
+     * @param http
+     * @return
+     * @throws Exception
+     */
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/issue/add").authenticated()
-                .anyRequest().permitAll()) // Ensure all other requests are permitted or properly secured
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/issue/*").authenticated()
+                        .anyRequest().permitAll()) // Ensure all other requests are permitted or properly secured
+                .sessionManagement(management -> management
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
+   
 }

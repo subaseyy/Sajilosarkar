@@ -45,6 +45,8 @@ public class IssueServiceImpl implements IssueService {
         List<Issue> issues = issueRepository.findByUserId(userId);
         return issues.stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
+    
     @Override
     public List<IssueDto> findAllIssues() {
         return issueRepository.findAll().stream()
@@ -204,4 +206,5 @@ public class IssueServiceImpl implements IssueService {
         issueDto.setGetImage(issue.getImage());
         return issueDto;
     }
+
 }
