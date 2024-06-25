@@ -11,13 +11,14 @@ import SignUp from "./Auth/SignUp";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import NewIssueReport from "./Client/ReportIssue/NewIssueReport";
 import Profile from "./Client/Profile";
-
 import ReportedIssues from "./Client/ReportIssue/ReportedIssues";
 import AuthProvider from "./Components/Context/AuthProvider";
 import ReportDetail from "./Client/ReportIssue/ReportDetail";
 import FaqPage from "./Client/HelpandSupport/FaqPage";
 import Accessibility from "./Client/HelpandSupport/accessibility";
 import UserGuidePage from "./Client/HelpandSupport/userGuide";
+import ScrapePricing from "./Client/ScrapeItems/scrapePricing";
+import PickupRequest from "./Client/ScrapeItems/PickupRequest";
 
 
 const App: React.FC = () => {
@@ -89,6 +90,20 @@ const App: React.FC = () => {
                 <Profile />
               </ProtectedRoute>
             }
+          />
+          <Route path="/dashboard/scrape-pricing"
+          element={
+            <ProtectedRoute>
+              <ScrapePricing />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/dashboard/pickup-requests"
+          element={
+            <ProtectedRoute>
+              <PickupRequest />
+            </ProtectedRoute>
+          }
           />
         </Routes>
       </AuthProvider>

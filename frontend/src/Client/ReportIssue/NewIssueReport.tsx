@@ -89,9 +89,10 @@ const NewIssueReport: React.FC = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
-      <div className="w-full bg-white p-8 rounded-lg shadow-md">
+      <div className="w-3/4 p-8">
+      <div className="bg-white shadow-md rounded-lg p-6">
         <h1 className="text-3xl font-bold mb-6 text-center">Report an Issue</h1>
         <h2 className="text-2xl font-semibold mb-4">New Report</h2>
         {error && (
@@ -194,6 +195,7 @@ const NewIssueReport: React.FC = () => {
             </button>
           </div>
         </form>
+      </div>
       </div>
     </div>
   );

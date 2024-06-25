@@ -51,9 +51,10 @@ const ReportedIssues: React.FC = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
-      <div className="w-full bg-white p-8 rounded-lg shadow-md">
+      <div className="w-3/4 p-8">
+      <div className="bg-white shadow-md rounded-lg p-6">
         <h1 className="text-2xl font-bold mb-4">Reported Issues</h1>
         {reports.length === 0 ? (
           <p>No reported issues found.</p>
@@ -69,6 +70,7 @@ const ReportedIssues: React.FC = () => {
           </ul>
         )}
       </div>
+    </div>
     </div>
   );
 };

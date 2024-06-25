@@ -75,7 +75,7 @@ const ReportDetail: React.FC = () => {
       .then(response => response.json())
       .then((data: Report) => {
         setReport(data);
-        setReplyText(''); // Clear reply input after successful submission
+        setReplyText(''); 
       })
       .catch(error => {
         console.error('There was an error!', error);
@@ -84,17 +84,22 @@ const ReportDetail: React.FC = () => {
 
   if (!report) {
     return (
-      <div className='flex'>
-        <div><Sidebar /></div>
+      <div className="flex min-h-screen bg-gray-100">
+      <Sidebar />
+      <div className="w-3/4 p-8">
+      <div className="bg-white shadow-md rounded-lg p-6">
         <div className='texts-center font-extrabold'> Loading... </div>
+      </div>
+      </div>
       </div>
     );
   }
 
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="w-full bg-white p-8 rounded-lg shadow-md">
+    <div className="flex min-h-screen bg-gray-100">
+    <Sidebar />
+    <div className="w-3/4 p-8">
+    <div className="bg-white shadow-md rounded-lg p-6">
         <h1 className="text-2xl font-bold mb-4">{report.title}</h1>
         <p className="text-gray-600">{report.location}</p>
         <p className="mt-2">{report.description}</p>
@@ -124,6 +129,7 @@ const ReportDetail: React.FC = () => {
             Submit Reply
           </button>
         </form>
+      </div>
       </div>
     </div>
   );
