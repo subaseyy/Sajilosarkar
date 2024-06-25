@@ -68,6 +68,9 @@ const NewIssueReport: React.FC = () => {
           "Authorization": `Bearer ${token}`,
         },
       });
+      console.log(response);
+      console.log(response.status);
+      console.log(data);
       console.log(response.data);
       navigate('/dashboard/report-issue/report-list');
     } catch (err) {

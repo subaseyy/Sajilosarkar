@@ -8,7 +8,8 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IssueService {
-    void saveIssue(IssueDto issueDto, MultipartFile image, Integer userId) throws IOException;
+   void saveIssue(IssueDto issueDto, MultipartFile image, Integer userId) throws IOException;
+    // void saveIssue(IssueDto issueDto, Integer userId) throws IOException;
 
     IssueDto findIssueById(Integer id);
     List<IssueDto> findAllIssues();

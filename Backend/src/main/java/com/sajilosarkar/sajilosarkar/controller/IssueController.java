@@ -7,15 +7,12 @@ import com.sajilosarkar.sajilosarkar.dto.IssueDto;
 import com.sajilosarkar.sajilosarkar.service.IssueService;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 
-import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 @RestController
 @RequestMapping("/api/issue")
@@ -28,27 +25,26 @@ public class IssueController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Map<String, String>> addIssue(
+    // public ResponseEntity<Map<String, String>> addIssue(
+    // @RequestPart("issue") IssueDto issueDto,
+    // @RequestPart("image") MultipartFile image,
+    // @RequestPart("userId") Integer userId,
+    // HttpServletRequest request) throws IOException {
+    // public ResponseEntity<Map<String, String>> addIssue(
+    // @ModelAttribute IssueDto issueDto,
+    // @RequestParam("file") MultipartFile file,
+    // @RequestParam("userId") Integer userId,
+    // HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> createIssue(@RequestParam Integer userId,
             @RequestPart("issue") IssueDto issueDto,
-            @RequestPart("image") MultipartFile image,
-            @RequestPart("userId") Integer userId,
-            HttpServletRequest request) throws IOException {
-
-        String authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Unauthorized");
-            return ResponseEntity.status(401).body(response);
-        }
-
+            @RequestPart("image") MultipartFile file) {
         try {
-            // Assume issueService.saveIssue() handles saving the issue details and image
-            issueService.saveIssue(issueDto, image, userId);
+            issueService.saveIssue(issueDto, file, userId);
             Map<String, String> response = new HashMap<>();
             response.put("message", "Issue added successfully!");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Log the exception details
             Map<String, String> response = new HashMap<>();
             response.put("message", "Failed to add issue");
             return ResponseEntity.status(500).body(response);
@@ -61,22 +57,15 @@ public class IssueController {
         return ResponseEntity.ok(issues);
     }
 
-    // @GetMapping("{userid}/list")
-    // public ResponseEntity<List<IssueDto>> getIssuesByUser(@PathVariable("userId")
-    // Integer userId) {
-    // List<IssueDto> issues = issueService.findIssueByUserId(userId);
-    // return ResponseEntity.ok(issues);
-    // }
-
     @GetMapping("{userid}/list")
     public ResponseEntity<List<IssueDto>> getIssuesByUser(@PathVariable Integer userid) {
-        List<IssueDto> issues = issueService.findIssueByUserId(userid);
+        List<IssueDto> issues = issueService.findIssuesByUserId(userid);
         return ResponseEntity.ok(issues);
     }
 
     @GetMapping("{userid}/list/{id}")
     public ResponseEntity<List<IssueDto>> getIssuesByUser(@PathVariable Integer userid, @PathVariable Integer id) {
-        List<IssueDto> issues = issueService.findIssueByUserId(userid);
+        List<IssueDto> issues = issueService.findIssuesByUserId(userid);
         return ResponseEntity.ok(issues);
     }
 
@@ -96,28 +85,27 @@ public class IssueController {
         }
     }
 
-
     @GetMapping("list/{title}")
     public ResponseEntity<List<IssueDto>> getIssueByTitle(@RequestParam String title) {
-        List<IssueDto> issues = issueService.findIssueByTitle(title);
+        List<IssueDto> issues = issueService.findIssuesByTitle(title);
         return ResponseEntity.ok(issues);
     }
 
     @GetMapping("list/{location}")
     public ResponseEntity<List<IssueDto>> getIssueByLocation(@RequestParam String location) {
-        List<IssueDto> issues = issueService.findIssueByLocation(location);
+        List<IssueDto> issues = issueService.findIssuesByLocation(location);
         return ResponseEntity.ok(issues);
     }
 
     @GetMapping("list/{status}")
     public ResponseEntity<List<IssueDto>> getIssueByStatus(@RequestParam Boolean status) {
-        List<IssueDto> issues = issueService.findIssueByStatus(status);
+        List<IssueDto> issues = issueService.findIssuesByStatus(status);
         return ResponseEntity.ok(issues);
     }
 
     @GetMapping("/list/{category}")
     public ResponseEntity<List<IssueDto>> getIssueByCategory(@RequestParam String category) {
-        List<IssueDto> issues = issueService.findIssueByCategory(category);
+        List<IssueDto> issues = issueService.findIssuesByCategory(category);
         return ResponseEntity.ok(issues);
     }
 
