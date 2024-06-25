@@ -1,16 +1,16 @@
 package com.sajilosarkar.sajilosarkar.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 import com.sajilosarkar.sajilosarkar.entity.OrderItem;
 import com.sajilosarkar.sajilosarkar.repository.OrderItemRepository;
 
+
 import java.util.List;
 import java.util.Optional;
 
 public class OrderItemService {
-    @Autowired
+
     private OrderItemRepository orderItemRepository;
 
     public List<OrderItem> getAllOrderItems() {

@@ -40,8 +40,10 @@ const Sidebar: React.FC = () => {
             to="/dashboard/report-issue/report-list"
           />
         </MenuItem>
-       
-
+       <MenuItem title = "Scrape Data" >
+        <MenuItem title="Scrape Pricing" to="/dashboard/scrape-pricing" />
+        <MenuItem title="Pickup Request" to="/dashboard/pickup-requests" />
+       </MenuItem>
         <MenuItem title="Help & Support">
           <MenuItem title="FAQ" to="/faq" />
           <MenuItem title="Contact Us" to="/contact" />
@@ -50,14 +52,7 @@ const Sidebar: React.FC = () => {
         </MenuItem>
         <MenuItem title="Account">
           <MenuItem title="Profile" to="/profile" />
-          <MenuItem title="Settings" to="/settings" />
-          <MenuItem title="Logout" onClick={handleLogout} />
-        </MenuItem>
 
-        <MenuItem title="Settings">
-          <MenuItem title="System Settings" to="/settings/system" />
-          <MenuItem title="Security Settings" to="/settings/security" />
-          <MenuItem title="Language Preferences" to="/settings/language" />
         </MenuItem>
       </div>
       <div>

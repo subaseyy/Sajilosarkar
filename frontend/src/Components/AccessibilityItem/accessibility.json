@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Web Accessibility",
+    "description": "The Sajilo Sarkar web portal is designed to be user-friendly and accessible to all citizens, regardless of their technological expertise."
+  },
+  {
+    "title": "24/7 Availability",
+    "description": "The portal provides a 24/7 facility to convey messages to the respective department, ensuring that citizens can report issues at any time."
+  },
+  {
+    "title": "Keyboard Navigation",
+    "description": "Ensure that all interactive elements on the portal are accessible via keyboard for users with disabilities."
+  },
+  {
+    "title": "Screen Reader Support",
+    "description": "All important elements on the portal are compatible with screen readers, providing text alternatives for non-text content."
+  },
+  {
+    "title": "Contrast and Text Size",
+    "description": "Users can adjust contrast and text size settings to improve readability according to their needs."
+  }
+]

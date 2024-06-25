@@ -15,6 +15,9 @@ import Profile from "./Client/Profile";
 import ReportedIssues from "./Client/ReportIssue/ReportedIssues";
 import AuthProvider from "./Components/Context/AuthProvider";
 import ReportDetail from "./Client/ReportIssue/ReportDetail";
+import FaqPage from "./Client/HelpandSupport/FaqPage";
+import Accessibility from "./Client/HelpandSupport/accessibility";
+import UserGuidePage from "./Client/HelpandSupport/userGuide";
 
 
 const App: React.FC = () => {
@@ -63,6 +66,22 @@ const App: React.FC = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/faq" element= {
+            <ProtectedRoute>
+              <FaqPage />
+            </ProtectedRoute>
+          }/>
+         
+          <Route path="/accessibility" element= {
+            <ProtectedRoute>
+              < Accessibility />
+            </ProtectedRoute>
+          }/>
+           <Route path="/user-guide" element= {
+            <ProtectedRoute>
+              < UserGuidePage />
+            </ProtectedRoute>
+          }/>
           <Route
             path="/profile"
             element={
