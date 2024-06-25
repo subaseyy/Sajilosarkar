@@ -1,15 +1,20 @@
 package com.sajilosarkar.sajilosarkar.controller;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sajilosarkar.sajilosarkar.dto.IssueDto;
 import com.sajilosarkar.sajilosarkar.service.IssueService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 
+import javax.naming.Binding;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -23,23 +28,31 @@ public class IssueController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addIssue(@ModelAttribute IssueDto issueDto, HttpServletRequest request)
-            throws IOException {
+    public ResponseEntity<Map<String, String>> addIssue(
+            @RequestPart("issue") IssueDto issueDto,
+            @RequestPart("image") MultipartFile image,
+            @RequestPart("userId") Integer userId,
+            HttpServletRequest request) throws IOException {
+
         String authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(401).body("Unauthorized");
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Unauthorized");
+            return ResponseEntity.status(401).body(response);
         }
 
-        // String token = authorizationHeader.substring(7);
-
-        // Validate the token here or assume it's validated by JwtAuthenticationFilter
-
-        if (issueDto.getStatus() == null) {
-            issueDto.setStatus(true);
+        try {
+            // Assume issueService.saveIssue() handles saving the issue details and image
+            issueService.saveIssue(issueDto, image, userId);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Issue added successfully!");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Failed to add issue");
+            return ResponseEntity.status(500).body(response);
         }
-
-        issueService.saveIssue(issueDto);
-        return ResponseEntity.ok("Issue added successfully!");
     }
 
     @GetMapping("/list")
@@ -82,7 +95,7 @@ public class IssueController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
 
     @GetMapping("list/{title}")
     public ResponseEntity<List<IssueDto>> getIssueByTitle(@RequestParam String title) {

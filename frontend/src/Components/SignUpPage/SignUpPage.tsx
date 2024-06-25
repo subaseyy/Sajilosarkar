@@ -12,7 +12,7 @@ interface FormData {
   city: string;
 }
 
-const SignUpPage = () => {
+const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
@@ -23,11 +23,13 @@ const SignUpPage = () => {
     streetAddress1: "",
     city: "",
   });
+
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string>("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, files } = e.target as HTMLInputElement;
+    const target = e.target as HTMLInputElement;
+    const { name, value, files } = target;
     if (files && files.length > 0) {
       setImage(files[0]);
     } else {
@@ -41,22 +43,23 @@ const SignUpPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData();
-    data.append('user', JSON.stringify(formData));
+    data.append('user', new Blob([JSON.stringify(formData)], { type: 'application/json' }));
+
     if (image) {
-        data.append('image', image);
+      data.append('image', image);
     }
 
     try {
-        const response = await axios.post("/api/users/register", data, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-        console.log(response.data);
-        navigate("/login");
+      const response = await axios.post("/api/users/register", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(response.data);
+      navigate("/login");
     } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Failed to register. Please try again.";
-        setError(errorMessage);
+      const errorMessage = err instanceof Error ? err.message : "Failed to register. Please try again.";
+      setError(errorMessage);
     }
   };
 

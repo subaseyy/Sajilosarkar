@@ -49,7 +49,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/issue/*").authenticated()
+                        .requestMatchers("/api/*").authenticated()
                         .anyRequest().permitAll()) // Ensure all other requests are permitted or properly secured
                 .sessionManagement(management -> management
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

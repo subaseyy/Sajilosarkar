@@ -1,23 +1,48 @@
+// package com.sajilosarkar.sajilosarkar.service;
+
+// import com.sajilosarkar.sajilosarkar.dto.UserDto;
+// import com.sajilosarkar.sajilosarkar.dto.LoginDto;
+// import com.sajilosarkar.sajilosarkar.entity.User;
+
+// import java.io.IOException;
+// import java.util.List;
+
+// import org.springframework.web.multipart.MultipartFile;
+
+// public interface UserService {
+//     void saveUser(UserDto userDto);
+
+//     User convertToEntity(UserDto userDto) throws IOException;
+
+//     UserDto findUserById(Integer id);
+//     UserDto findUserByEmail(String email);
+//     List<UserDto> findAllUsers();
+//     void updateUserPassword(Integer id, String newPassword);
+//     void deleteUserById(Integer id);
+//     void assignRoleToUser(Integer userId, Integer Ida);
+//     String authenticateUser(LoginDto loginDto);
+//     // void saveUser(User user, MultipartFile image);  // Add this method
+//     void saveUser(UserDto userDto, MultipartFile image);
+
+
+
+// }
 package com.sajilosarkar.sajilosarkar.service;
 
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
 import com.sajilosarkar.sajilosarkar.dto.LoginDto;
-import com.sajilosarkar.sajilosarkar.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
     void saveUser(UserDto userDto);
-
-    User convertToEntity(UserDto userDto) throws IOException;
-
+    void saveUser(UserDto userDto, MultipartFile image);
     UserDto findUserById(Integer id);
     UserDto findUserByEmail(String email);
     List<UserDto> findAllUsers();
     void updateUserPassword(Integer id, String newPassword);
     void deleteUserById(Integer id);
-    void assignRoleToUser(Integer userId, Integer Ida);
+    void assignRoleToUser(Integer userId, Integer roleId);
     String authenticateUser(LoginDto loginDto);
-
 }

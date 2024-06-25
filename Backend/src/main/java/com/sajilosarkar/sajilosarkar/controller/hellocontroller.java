@@ -9,4 +9,7 @@ public class hellocontroller {
     public String hello() {
         return "Hello World!";
     }
+
+    @GetMapping("/error")
+    public String error() {return "Can't Get /api";}
 }

@@ -9,6 +9,8 @@ import com.sajilosarkar.sajilosarkar.repository.UserRepository;
 import com.sajilosarkar.sajilosarkar.service.JwtService;
 import com.sajilosarkar.sajilosarkar.service.UserService;
 import lombok.RequiredArgsConstructor;
+
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +20,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-// import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,30 +52,45 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User convertToEntity(UserDto userDto) {
+    @Transactional(rollbackFor = Exception.class)
+    public void saveUser(UserDto userDto, MultipartFile image) {
+        User user = convertToEntity(userDto);
+        if (image != null && !image.isEmpty()) {
+            try {
+                String filename = FilenameUtils.getName(image.getOriginalFilename());
+                Path filePath = Paths.get(UPLOAD_DIRECTORY, filename);
+                Files.write(filePath, image.getBytes());
+                user.setImage(filename);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to store image", e);
+            }
+        }
+        userRepository.save(user);
+    }
+
+    private User convertToEntity(UserDto userDto) {
         User user = new User();
-        user.setId(userDto.getId());
         user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setPhone(userDto.getPhone());
-        user.setAddress(userDto.getStreetAddress1());
         user.setStatus(true);
-
-        Role defaultRole = roleRepository.findByName("USER")
-                .orElseThrow(() -> new IllegalArgumentException("Default role not found"));
-        user.getRoles().add(defaultRole);
-
-        if (userDto.getImage() != null) {
-            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, userDto.getImage().getOriginalFilename());
+        user.setAddress(userDto.getStreetAddress1() + " " + userDto.getStreetAddress2() + " " + userDto.getCity());
+    
+        // Handle the image field
+        if (userDto.getImage() != null && !userDto.getImage().isEmpty()) {
+            @SuppressWarnings("null")
+            String fileName = StringUtils.cleanPath(userDto.getImage().getOriginalFilename());
+            // Assuming UPLOAD_DIRECTORY is defined as your upload directory path
+            Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, fileName);
             try {
                 Files.write(fileNameAndPath, userDto.getImage().getBytes());
+                user.setImage(fileName); // Set the image filename in the User entity
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to store file " + fileName, e);
             }
-            user.setImage(userDto.getImage().getOriginalFilename());
         }
-
+    
         return user;
     }
 
@@ -163,5 +182,29 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.joining(", ")));
 
         return userDto;
+    }
+
+    public String getUPLOAD_DIRECTORY() {
+        return UPLOAD_DIRECTORY;
+    }
+
+    public RoleRepository getRoleRepository() {
+        return roleRepository;
+    }
+
+    public UserRepository getUserRepository() {
+        return userRepository;
+    }
+
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
+
+    public JwtService getJwtService() {
+        return jwtService;
+    }
+
+    public AuthenticationManager getAuthenticationManager() {
+        return authenticationManager;
     }
 }

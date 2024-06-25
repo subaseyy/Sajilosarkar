@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Sidebar from "../../Components/Sidebar/Sidebar";
-// import { useAuth } from '../../Components/Context/AuthProvider';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
   title: string;
@@ -8,64 +9,71 @@ interface FormData {
   location: string;
   description: string;
   priority: string;
-  image: File | null;
 }
 
 const NewIssueReport: React.FC = () => {
+  const navigate = useNavigate();
+  const userId = localStorage.getItem('id');
+
   const [formData, setFormData] = useState<FormData>({
-    title: '',
-    category: 'Roads',
-    location: '',
-    description: '',
-    priority: 'Low',
-    image: null,
+    title: "",
+    category: "Roads",
+    location: "",
+    description: "",
+    priority: "Low",
   });
 
-  const userId = localStorage.getItem('id');
+  const [image, setImage] = useState<File | null>(null);
+  const [error, setError] = useState<string>("");
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, files } = e.target as HTMLInputElement;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: files ? files[0] : value,
-    }));
+    const target = e.target as HTMLInputElement;
+    const { name, value, files } = target;
+
+    if (files && files.length > 0) {
+      setImage(files[0]);
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const token = localStorage.getItem('token');
     if (!token) {
       alert('You are not authorized. Please login.');
       return;
     }
+    const data = new FormData();
+    data.append('issue', new Blob([JSON.stringify(formData)], { type: 'application/json' }));
 
-    const issueData = new FormData();
-    for (const key in formData) {
-      if (formData[key as keyof FormData] !== null) {
-        issueData.append(key, formData[key as keyof FormData] as Blob | string);
-      }
+    if (image) {
+      data.append('image', image);
     }
-    if (userId) {
-      issueData.append('userId', userId); 
+
+    if (!userId) {
+      alert('User not found. Please login.');
+      return;
+    } else {
+      data.append('userId', userId);
     }
 
     try {
-      const response = await fetch('/api/issue/add', {
-        method: 'POST',
+      const response = await axios.post("/api/issue/add", data, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${token}`,
         },
-        body: issueData,
       });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      alert('Issue added successfully!');
-    } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
-      alert('Failed to submit issue.');
+      console.log(response.data);
+      navigate('/dashboard/report-issue/report-list');
+    } catch (err) {
+      console.error(err);
+      const errorMessage = err instanceof Error ? err.message : "Failed to submit issue. Please try again.";
+      setError(errorMessage);
     }
   };
 
@@ -75,8 +83,13 @@ const NewIssueReport: React.FC = () => {
       <div className="w-full bg-white p-8 rounded-lg shadow-md">
         <h1 className="text-3xl font-bold mb-6 text-center">Report an Issue</h1>
         <h2 className="text-2xl font-semibold mb-4">New Report</h2>
+        {error && (
+          <div className="p-4 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
+            {error}
+          </div>
+        )}
         <form className="space-y-6" onSubmit={handleSubmit}>
-        <div>
+          <div>
             <label className="block text-sm font-medium text-gray-700">Title</label>
             <input
               type="text"
@@ -100,7 +113,7 @@ const NewIssueReport: React.FC = () => {
               <option>Parking</option>
               <option>Bus</option>
               <option>Garbage</option>
-              <option>Cychng</option>
+              <option>Cycling</option>
               <option>Walking</option>
               <option>Streetlights</option>
               <option>Footpath</option>

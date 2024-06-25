@@ -1,11 +1,13 @@
 package com.sajilosarkar.sajilosarkar.controller;
 
-// import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
+// import com.sajilosarkar.sajilosarkar.entity.User;
 import com.sajilosarkar.sajilosarkar.service.UserService;
 import com.sajilosarkar.sajilosarkar.service.JwtService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,25 +41,15 @@ public class UserController {
         // this.objectMapper = objectMapper;
     }
 
-    @PostMapping("/register")
+@PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(
-            @RequestPart("user") String user,
+            @RequestPart("user") UserDto userDto,
             @RequestPart("image") MultipartFile image,
-            BindingResult bindingResult) throws Exception {
+            BindingResult bindingResult,
+            HttpServletRequest request) throws IOException {
         
-        if (bindingResult.hasErrors()) {
-            // handle validation errors
-            Map<String, String> errors = new HashMap<>();
-            bindingResult.getFieldErrors().forEach(error ->
-                    errors.put(error.getField(), error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(errors);
-        }
-
-        // Handle the registration logic here
-
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User registered successfully");
-        return ResponseEntity.ok(response);
+        userService.saveUser(userDto, image);
+        return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 
 
