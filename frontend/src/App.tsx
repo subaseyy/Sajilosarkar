@@ -17,8 +17,9 @@ import ReportDetail from "./Client/ReportIssue/ReportDetail";
 import FaqPage from "./Client/HelpandSupport/FaqPage";
 import Accessibility from "./Client/HelpandSupport/accessibility";
 import UserGuidePage from "./Client/HelpandSupport/userGuide";
-import ScrapePricing from "./Client/ScrapeItems/scrapePricing";
 import PickupRequest from "./Client/ScrapeItems/PickupRequest";
+import ScrapePricing from "./Client/ScrapeItems/ScrapePricing";
+
 
 
 const App: React.FC = () => {
