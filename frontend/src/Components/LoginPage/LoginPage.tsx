@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../Context/AuthProvider';
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
 
@@ -14,8 +14,8 @@ const LoginPage: React.FC = () => {
     event.preventDefault();
 
     try {
-      await loginAction({ email, password });
-      setEmail('');
+      await loginAction({ username, password });
+      setUsername('');
       setPassword('');
       navigate('/dashboard');
     } catch (err) {
@@ -49,8 +49,8 @@ const LoginPage: React.FC = () => {
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div>
