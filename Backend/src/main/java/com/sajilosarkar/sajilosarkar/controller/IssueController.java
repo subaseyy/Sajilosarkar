@@ -8,8 +8,6 @@ import com.sajilosarkar.sajilosarkar.service.IssueService;
 
 import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,16 +23,6 @@ public class IssueController {
     }
 
     @PostMapping("/add")
-    // public ResponseEntity<Map<String, String>> addIssue(
-    // @RequestPart("issue") IssueDto issueDto,
-    // @RequestPart("image") MultipartFile image,
-    // @RequestPart("userId") Integer userId,
-    // HttpServletRequest request) throws IOException {
-    // public ResponseEntity<Map<String, String>> addIssue(
-    // @ModelAttribute IssueDto issueDto,
-    // @RequestParam("file") MultipartFile file,
-    // @RequestParam("userId") Integer userId,
-    // HttpServletRequest request) throws IOException {
     public ResponseEntity<?> createIssue(@RequestParam Integer userId,
             @RequestPart("issue") IssueDto issueDto,
             @RequestPart("image") MultipartFile file) {

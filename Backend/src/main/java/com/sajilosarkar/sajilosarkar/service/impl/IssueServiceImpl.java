@@ -25,12 +25,9 @@ import java.util.stream.Collectors;
 @Service
 public class IssueServiceImpl implements IssueService {
 
-
     private IssueRepository issueRepository;
     private UserRepository userRepository;
     private UserService userService;
-
-
 
     public IssueServiceImpl(IssueRepository issueRepository, UserRepository userRepository, UserService userService) {
         this.issueRepository = issueRepository;
@@ -40,26 +37,23 @@ public class IssueServiceImpl implements IssueService {
 
     private final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/media/images/issue_raise";
 
-   @Override
-   public void saveIssue(IssueDto issueDto, MultipartFile image, Integer userId) throws IOException {
-       Issue issue = convertToEntity(issueDto);
-       UserDto userDto = userService.findUserById(userId);
-       issue.setUserId(userDto.getId());
-       if (image != null && !image.isEmpty()) {
-           String filename = FilenameUtils.getName(image.getOriginalFilename());
-           Path path = Paths.get(UPLOAD_DIRECTORY + "/" + filename);
-           Files.write(path, image.getBytes());
-           issue.setImage(filename);
-       } else {
-           issue.setImage(null);
-       }
-       issueRepository.save(issue);
-   }
+    @Override
+    public void saveIssue(IssueDto issueDto, MultipartFile image, Integer userId) throws IOException {
+        Issue issue = convertToEntity(issueDto);
+        UserDto userDto = userService.findUserById(userId);
+        issue.setUserId(userDto.getId());
+        if (image != null && !image.isEmpty()) {
+            String filename = FilenameUtils.getName(image.getOriginalFilename());
+            Path path = Paths.get(UPLOAD_DIRECTORY + "/" + filename);
+            Files.write(path, image.getBytes());
+            issue.setImage(filename);
+        } else {
+            issue.setImage(null);
+        }
+        issueRepository.save(issue);
+    }
 
-
-
-
-        private Issue convertToEntity(IssueDto issueDto) {
+    private Issue convertToEntity(IssueDto issueDto) {
         Issue issue = new Issue();
         issue.setTitle(issueDto.getTitle());
         issue.setCategory(issueDto.getCategory());
@@ -68,7 +62,7 @@ public class IssueServiceImpl implements IssueService {
         issue.setPriority(issueDto.getPriority());
         issue.setStatus(true);
 
-        if (issueDto.getImage() != null && !issueDto.getImage().isEmpty()  ) {
+        if (issueDto.getImage() != null && !issueDto.getImage().isEmpty()) {
             @SuppressWarnings("null")
             String fileName = StringUtils.cleanPath(issueDto.getImage().getOriginalFilename());
             Path fileNameAndPath = Paths.get(UPLOAD_DIRECTORY, fileName);
@@ -79,7 +73,6 @@ public class IssueServiceImpl implements IssueService {
                 throw new RuntimeException("Failed to store file " + fileName, e);
             }
         }
-
 
         return issue;
     }
@@ -232,15 +225,16 @@ public class IssueServiceImpl implements IssueService {
         List<Issue> issues = issueRepository.findByUserAndLocation(user, location);
         return issues.stream()
                 .map(this::convertToDto)
-                .collect(Collectors.toList());    }
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<IssueDto> findIssuesByUserAndDescription(UserDto userDto, String description) {
         User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new RuntimeException("User not found"));
-    List<Issue> issues = issueRepository.findByUserAndDescription(user, description);
-    return issues.stream()
-            .map(this::convertToDto)
-            .collect(Collectors.toList());
+        List<Issue> issues = issueRepository.findByUserAndDescription(user, description);
+        return issues.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -249,7 +243,8 @@ public class IssueServiceImpl implements IssueService {
         List<Issue> issues = issueRepository.findByUserAndPriority(user, priority);
         return issues.stream()
                 .map(this::convertToDto)
-                .collect(Collectors.toList());    }
+                .collect(Collectors.toList());
+    }
 
     @Override
     public List<IssueDto> findIssuesByUserAndStatus(UserDto userDto, Boolean status) {
@@ -257,5 +252,6 @@ public class IssueServiceImpl implements IssueService {
         List<Issue> issues = issueRepository.findByUserAndStatus(user, status);
         return issues.stream()
                 .map(this::convertToDto)
-                .collect(Collectors.toList());    }
+                .collect(Collectors.toList());
+    }
 }

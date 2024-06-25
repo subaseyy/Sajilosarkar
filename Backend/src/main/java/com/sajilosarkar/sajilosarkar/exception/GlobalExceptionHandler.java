@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<String> handleMaxSizeException(MaxUploadSizeExceededException exc) {
         return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
-                             .body("File size exceeds the maximum limit!");
+                .body("File size exceeds the maximum limit!");
     }
-    
+
 }

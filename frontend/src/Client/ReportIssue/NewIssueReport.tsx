@@ -1,7 +1,7 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import Sidebar from "../../Components/Sidebar/Sidebar";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   title: string;
@@ -13,7 +13,7 @@ interface FormData {
 
 const NewIssueReport: React.FC = () => {
   const navigate = useNavigate();
-  const userId = localStorage.getItem('id');
+  const userId = localStorage.getItem("id");
 
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -26,7 +26,9 @@ const NewIssueReport: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [error, setError] = useState<string>("");
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
     const target = e.target as HTMLInputElement;
     const { name, value, files } = target;
 
@@ -42,40 +44,46 @@ const NewIssueReport: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      alert('You are not authorized. Please login.');
+      alert("You are not authorized. Please login.");
       return;
     }
     const data = new FormData();
-    data.append('issue', new Blob([JSON.stringify(formData)], { type: 'application/json' }));
+    data.append(
+      "issue",
+      new Blob([JSON.stringify(formData)], { type: "application/json" })
+    );
 
     if (image) {
-      data.append('image', image);
+      data.append("image", image);
     }
 
     if (!userId) {
-      alert('User not found. Please login.');
+      alert("User not found. Please login.");
       return;
     } else {
-      data.append('userId', userId);
+      data.append("userId", userId);
     }
 
     try {
       const response = await axios.post("/api/issue/add", data, {
         headers: {
           "Content-Type": "multipart/form-data",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       console.log(response);
       console.log(response.status);
       console.log(data);
       console.log(response.data);
-      navigate('/dashboard/report-issue/report-list');
+      navigate("/dashboard/report-issue/report-list");
     } catch (err) {
       console.error(err);
-      const errorMessage = err instanceof Error ? err.message : "Failed to submit issue. Please try again.";
+      const errorMessage =
+        err instanceof Error
+          ? err.message
+          : "Failed to submit issue. Please try again.";
       setError(errorMessage);
     }
   };
@@ -93,7 +101,9 @@ const NewIssueReport: React.FC = () => {
         )}
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Title</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Title
+            </label>
             <input
               type="text"
               name="title"
@@ -104,7 +114,9 @@ const NewIssueReport: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Category</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Category
+            </label>
             <select
               name="category"
               value={formData.category}
@@ -123,7 +135,9 @@ const NewIssueReport: React.FC = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Location</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Location
+            </label>
             <input
               type="text"
               name="location"
@@ -134,7 +148,9 @@ const NewIssueReport: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Issue Description</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Issue Description
+            </label>
             <textarea
               name="description"
               value={formData.description}
@@ -144,7 +160,9 @@ const NewIssueReport: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Priority Level</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Priority Level
+            </label>
             <select
               name="priority"
               value={formData.priority}
@@ -157,7 +175,9 @@ const NewIssueReport: React.FC = () => {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Upload Images</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Upload Images
+            </label>
             <input
               type="file"
               name="image"
@@ -166,7 +186,10 @@ const NewIssueReport: React.FC = () => {
             />
           </div>
           <div>
-            <button type="submit" className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
               Submit
             </button>
           </div>
