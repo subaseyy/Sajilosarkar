@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Setter
 @Getter
 @AllArgsConstructor
@@ -23,7 +22,4 @@ public class IssueDto {
     private MultipartFile image;
     private String getImage;
     private Integer userId;
-
-
-    
 }

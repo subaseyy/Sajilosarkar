@@ -1,9 +1,7 @@
 package com.sajilosarkar.sajilosarkar.config;
 
-
 import com.sajilosarkar.sajilosarkar.service.JwtService;
 import com.sajilosarkar.sajilosarkar.service.impl.CustomUserDetailService;
-
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,14 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private final CustomUserDetailService customUserDetailService;
 
-
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver exceptionResolver;
 
     @SuppressWarnings("null")
     @Override
-    protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
 
@@ -54,8 +51,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.customUserDetailService.loadUserByUsername(username);
             if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

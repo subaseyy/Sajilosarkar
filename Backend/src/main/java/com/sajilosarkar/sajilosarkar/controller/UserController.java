@@ -1,9 +1,7 @@
 package com.sajilosarkar.sajilosarkar.controller;
 
-
 import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
-// import com.sajilosarkar.sajilosarkar.entity.User;
 import com.sajilosarkar.sajilosarkar.service.UserService;
 import com.sajilosarkar.sajilosarkar.service.JwtService;
 
@@ -33,27 +31,23 @@ public class UserController {
     private JwtService jwtService;
 
     private final UserService userService;
-    // private final ObjectMapper objectMapper;
 
-    // public UserController(UserService userService, ObjectMapper objectMapper) {
     public UserController(UserService userService) {
         this.userService = userService;
-        // this.objectMapper = objectMapper;
     }
 
-@PostMapping("/register")
+    @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(
             @RequestPart("user") UserDto userDto,
             @RequestPart("image") MultipartFile image,
             BindingResult bindingResult,
             HttpServletRequest request) throws IOException {
-        
+
         userService.saveUser(userDto, image);
         return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 
-
-@PostMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@Valid @RequestBody LoginDto loginDto) {
         try {
             String token = userService.authenticateUser(loginDto);
@@ -98,7 +92,8 @@ public class UserController {
     }
 
     @PutMapping("/updatePassword/{id}")
-    public ResponseEntity<Map<String, String>> updateUserPassword(@PathVariable Integer id, @RequestParam String newPassword) {
+    public ResponseEntity<Map<String, String>> updateUserPassword(@PathVariable Integer id,
+            @RequestParam String newPassword) {
         userService.updateUserPassword(id, newPassword);
         return ResponseEntity.ok(Map.of("message", "Password updated successfully!"));
     }
@@ -110,7 +105,8 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/assignRole")
-    public ResponseEntity<Map<String, String>> assignRoleToUser(@PathVariable Integer userId, @RequestParam Integer roleId) {
+    public ResponseEntity<Map<String, String>> assignRoleToUser(@PathVariable Integer userId,
+            @RequestParam Integer roleId) {
         userService.assignRoleToUser(userId, roleId);
         return ResponseEntity.ok(Map.of("message", "Role assigned successfully!"));
     }

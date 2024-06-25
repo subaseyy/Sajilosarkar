@@ -58,5 +58,5 @@ public class PickupOrderDTO {
 
     public void setOrderItems(List<OrderItemDTO> orderItems) {
         this.orderItems = orderItems;
-    }   
+    }
 }

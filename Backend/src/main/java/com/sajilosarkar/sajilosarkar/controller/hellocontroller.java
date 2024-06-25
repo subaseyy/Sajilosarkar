@@ -11,5 +11,7 @@ public class hellocontroller {
     }
 
     @GetMapping("/error")
-    public String error() {return "Can't Get /api";}
+    public String error() {
+        return "Can't Get /api";
+    }
 }
