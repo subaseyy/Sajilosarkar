@@ -20,12 +20,7 @@ import UserGuidePage from "./Client/HelpandSupport/userGuide";
 import PickupRequest from "./Client/ScrapeItems/PickupRequest";
 import ScrapePricing from "./Client/ScrapeItems/ScrapePricing";
 
-
-
 const App: React.FC = () => {
-
- 
-
   return (
     <Router>
       <AuthProvider>
@@ -57,9 +52,10 @@ const App: React.FC = () => {
             path="/dashboard/report-issue/report-detail/:id"
             element={
               <ProtectedRoute>
-                <ReportDetail /> 
-               </ProtectedRoute>
-            }  /> 
+                <ReportDetail />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/dashboard/report-issue/report-list"
             element={
@@ -68,22 +64,31 @@ const App: React.FC = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/faq" element= {
-            <ProtectedRoute>
-              <FaqPage />
-            </ProtectedRoute>
-          }/>
-         
-          <Route path="/accessibility" element= {
-            <ProtectedRoute>
-              < Accessibility />
-            </ProtectedRoute>
-          }/>
-           <Route path="/user-guide" element= {
-            <ProtectedRoute>
-              < UserGuidePage />
-            </ProtectedRoute>
-          }/>
+          <Route
+            path="/faq"
+            element={
+              <ProtectedRoute>
+                <FaqPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/accessibility"
+            element={
+              <ProtectedRoute>
+                <Accessibility />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user-guide"
+            element={
+              <ProtectedRoute>
+                <UserGuidePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -92,19 +97,21 @@ const App: React.FC = () => {
               </ProtectedRoute>
             }
           />
-          <Route path="/dashboard/scrape-pricing"
-          element={
-            <ProtectedRoute>
-              <ScrapePricing />
-            </ProtectedRoute>
-          }
+          <Route
+            path="/dashboard/scrape-pricing"
+            element={
+              <ProtectedRoute>
+                <ScrapePricing />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/dashboard/pickup-requests"
-          element={
-            <ProtectedRoute>
-              <PickupRequest />
-            </ProtectedRoute>
-          }
+          <Route
+            path="/dashboard/pickup-requests"
+            element={
+              <ProtectedRoute>
+                <PickupRequest />
+              </ProtectedRoute>
+            }
           />
         </Routes>
       </AuthProvider>

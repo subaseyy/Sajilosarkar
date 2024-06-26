@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@fontsource/roboto": "^5.0.13",
+    "@mui/material": "^5.15.20",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-menu": "^2.0.6",
     "@types/chart.js": "^2.9.41",
