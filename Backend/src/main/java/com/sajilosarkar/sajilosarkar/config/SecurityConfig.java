@@ -35,7 +35,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .requestMatchers("/api/users/login", "/hello", "/refresh-token", "/api/users/register", "/error");
+                .requestMatchers("/api/users/login", "/hello", "/api/users/refresh-token", "/api/users/register", "/error");
     }
 
     /**

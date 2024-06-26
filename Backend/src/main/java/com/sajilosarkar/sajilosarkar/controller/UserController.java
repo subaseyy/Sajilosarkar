@@ -110,4 +110,5 @@ public class UserController {
         userService.assignRoleToUser(userId, roleId);
         return ResponseEntity.ok(Map.of("message", "Role assigned successfully!"));
     }
+
 }

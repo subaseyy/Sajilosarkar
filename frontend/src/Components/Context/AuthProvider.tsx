@@ -37,13 +37,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   }, []);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
-
-  useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
       if (
         event.key === "token" ||
@@ -81,7 +74,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     localStorage.removeItem("token");
     localStorage.removeItem("firstname");
     localStorage.removeItem("id");
-    // Navigate after logout can be handled outside via callback
     navigate("/login");
   };
 
