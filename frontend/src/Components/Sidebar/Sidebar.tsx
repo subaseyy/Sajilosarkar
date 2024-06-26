@@ -9,17 +9,12 @@ const Sidebar: React.FC = () => {
   const { token, logOut } = useAuth();
   const firstname = localStorage.getItem("firstname");
 
-  // function init() {
-  //   logOut();
-  //   navigate("/login");
-  // }
-
   const handleLogout = () => {
     logOut();
     navigate("/login");
   };
   return (
-    <div className="w-60 flex flex-col min-h-screen bg-accent-1">
+    <div className="w-80 flex flex-col min-h-screen bg-accent-1">
       <div className="flex flex-col items-center mt-16 text-3xl font-extrabold">
         <NavLink to="/dashboard">
           <img src={NavImg} className="h-32 p-1" alt="Sajilo Sarkar Logo" />
@@ -40,10 +35,11 @@ const Sidebar: React.FC = () => {
             to="/dashboard/report-issue/report-list"
           />
         </MenuItem>
-       <MenuItem title = "Scrape Data" >
-        <MenuItem title="Scrape Pricing" to="/dashboard/scrape-pricing" />
-        <MenuItem title="Pickup Request" to="/dashboard/pickup-requests" />
-       </MenuItem>
+        <MenuItem title="Scrape Data">
+          <MenuItem title="Scrape Pricing" to="/dashboard/scrape-pricing" />
+          <MenuItem title="Pickup Request" to="/dashboard/pickup-requests" />
+          <MenuItem title="Previous Request" to="/dashboard/previous-requests" />
+        </MenuItem>
         <MenuItem title="Help & Support">
           <MenuItem title="FAQ" to="/faq" />
           <MenuItem title="Contact Us" to="/contact" />
@@ -52,7 +48,6 @@ const Sidebar: React.FC = () => {
         </MenuItem>
         <MenuItem title="Account">
           <MenuItem title="Profile" to="/profile" />
-
         </MenuItem>
       </div>
       <div>
@@ -87,7 +82,6 @@ const Sidebar: React.FC = () => {
               </div>
             ) : (
               <>
-                {/* {window.addEventListener("load", init)} */}
                 <NavLink
                   to="/login"
                   className="mx-2 bg-accent-2 p-2 rounded-full"
