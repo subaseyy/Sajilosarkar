@@ -1,17 +1,15 @@
 package com.sajilosarkar.sajilosarkar.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDto {
+public class AuthRequest {
     private String email;
     private String password;
-
 }

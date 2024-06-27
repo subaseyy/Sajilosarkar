@@ -2,7 +2,6 @@ package com.sajilosarkar.sajilosarkar.repository;
 
 import com.sajilosarkar.sajilosarkar.entity.User;
 
-import io.micrometer.common.lang.NonNull;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,8 +13,9 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     // @Override
-    @NonNull
-    // Optional<User> findById(Integer id);
+    @SuppressWarnings("null")
+    Optional<User> findById(Integer id);
+    // Optional<User> loadUserById(Integer id);
 
     Optional<User> findByEmail(String email);
     Optional<User> getUserByEmail(String email);

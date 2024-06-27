@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -10,13 +10,16 @@ import Table from '@mui/material/Table';
 const ScrapePricingTable = () => {
   const [rows, setRows] = useState([]);
 
+  const token = localStorage.getItem("token");
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8089/api/scrapeitems/all', {
           method: 'GET',
           headers: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6W10sImlhdCI6MTcxOTM3Mzk2MiwiZXhwIjoxNzE5NDA5OTYyfQ.RBKZAYPrVSThrY1VUvV3gZaU7-4Ml-MooEEn6p6sl_M',
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         });

@@ -1,13 +1,14 @@
 package com.sajilosarkar.sajilosarkar.service.impl;
 
+import com.sajilosarkar.sajilosarkar.config.JwtService;
 import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
 import com.sajilosarkar.sajilosarkar.entity.Role;
 import com.sajilosarkar.sajilosarkar.entity.User;
 import com.sajilosarkar.sajilosarkar.repository.RoleRepository;
 import com.sajilosarkar.sajilosarkar.repository.UserRepository;
-import com.sajilosarkar.sajilosarkar.service.JwtService;
 import com.sajilosarkar.sajilosarkar.service.UserService;
+import com.sajilosarkar.sajilosarkar.util.PasswordEncoderUtil;
 import lombok.RequiredArgsConstructor;
 
 import org.apache.commons.io.FilenameUtils;
@@ -17,7 +18,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +40,6 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
@@ -72,7 +71,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setPassword(PasswordEncoderUtil.getInstance().encode(userDto.getPassword()));
         user.setPhone(userDto.getPhone());
         user.setStatus(true);
         user.setAddress(userDto.getStreetAddress1() + " " + userDto.getStreetAddress2() + " " + userDto.getCity());
@@ -125,7 +124,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setPassword(PasswordEncoderUtil.getInstance().encode(newPassword));
             userRepository.save(user);
         } else {
             throw new IllegalArgumentException("User not found with id: " + id);
@@ -184,27 +183,16 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
-    public String getUPLOAD_DIRECTORY() {
-        return UPLOAD_DIRECTORY;
-    }
+//    public String getUPLOAD_DIRECTORY() {
+//        return UPLOAD_DIRECTORY;
+//    }
+//
+//    public RoleRepository getRoleRepository() {
+//        return roleRepository;
+//    }
+//
+//    public UserRepository getUserRepository() {
+//        return userRepository;
+//    }
 
-    public RoleRepository getRoleRepository() {
-        return roleRepository;
-    }
-
-    public UserRepository getUserRepository() {
-        return userRepository;
-    }
-
-    public PasswordEncoder getPasswordEncoder() {
-        return passwordEncoder;
-    }
-
-    public JwtService getJwtService() {
-        return jwtService;
-    }
-
-    public AuthenticationManager getAuthenticationManager() {
-        return authenticationManager;
-    }
 }

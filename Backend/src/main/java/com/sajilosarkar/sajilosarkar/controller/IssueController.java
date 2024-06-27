@@ -7,12 +7,14 @@ import com.sajilosarkar.sajilosarkar.dto.IssueDto;
 import com.sajilosarkar.sajilosarkar.service.IssueService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@Validated
 @RequestMapping("/api/issue")
 public class IssueController {
 
@@ -57,7 +59,7 @@ public class IssueController {
         return ResponseEntity.ok(issues);
     }
 
-    @DeleteMapping("{id}/delete")
+    @DeleteMapping("{id}")
     public ResponseEntity<String> deleteIssue(@PathVariable Integer id) {
         issueService.deleteIssueById(id);
         return ResponseEntity.ok("Issue deleted successfully!");
