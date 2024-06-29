@@ -40,7 +40,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const handleStorageChange = (event: StorageEvent) => {
       if (
         event.key === "token" ||
-        event.key === "firstname" ||
+        event.key === "name" ||
         event.key === "id"
       ) {
         logOut();
@@ -55,11 +55,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   const loginAction = async (credentials: { username: string; password: string }) => {
     try {
-      const response = await axios.post("/api/users/login", credentials);
+      const response = await axios.post("http://localhost:8089/authenticate", credentials);
       const { roles, name, id, token } = response.data;
       setToken(token);
       localStorage.setItem("token", token);
-      localStorage.setItem("firstname", name);
+      localStorage.setItem("name", name);
       localStorage.setItem("id", id);
       setUser({ roles, name, id });
       navigate("/dashboard");
@@ -72,7 +72,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
-    localStorage.removeItem("firstname");
+    localStorage.removeItem("name");
     localStorage.removeItem("id");
     navigate("/login");
   };

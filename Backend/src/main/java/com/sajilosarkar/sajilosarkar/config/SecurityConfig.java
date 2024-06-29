@@ -105,8 +105,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/authenticate")
                 .permitAll()
-                .requestMatchers("/api/scrapeitems/all")
-                .hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

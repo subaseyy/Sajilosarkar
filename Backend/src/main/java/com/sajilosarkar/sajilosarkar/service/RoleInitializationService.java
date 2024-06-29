@@ -17,13 +17,13 @@ public class RoleInitializationService {
 
     @PostConstruct
     public void initRoles() {
-        createRoleIfNotExists("ROLE_LOCAL_GOVERNMENT");
-        createRoleIfNotExists("ROLE_USER");
-        createRoleIfNotExists("ROLE_SUPER_ADMIN");
+        createRoleIfNotExists("USER");
+        createRoleIfNotExists("STAFF");
+        createRoleIfNotExists("ADMIN");
     }
 
     private void createRoleIfNotExists(String roleName) {
-        if (roleRepository.findByName(roleName) == null) {
+        if (roleRepository.findByName(roleName).isEmpty()) {
             Role role = new Role();
             role.setName(roleName);
             roleRepository.save(role);

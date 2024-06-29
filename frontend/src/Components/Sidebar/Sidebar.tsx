@@ -7,7 +7,7 @@ import { useAuth } from "../Context/AuthProvider";
 const Sidebar: React.FC = () => {
   const navigate = useNavigate();
   const { token, logOut } = useAuth();
-  const firstname = localStorage.getItem("firstname");
+  const name = localStorage.getItem("name");
 
   const handleLogout = () => {
     logOut();
@@ -59,7 +59,7 @@ const Sidebar: React.FC = () => {
           <div className=" items-center justify-center my-3">
             {token ? (
               <div>
-                <span className="font-bold"> {firstname} </span>
+                <span className="font-bold"> {name} </span>
                 <button
                   className=" mx-2 bg-accent-2 p-2 rounded-full "
                   onClick={handleLogout}

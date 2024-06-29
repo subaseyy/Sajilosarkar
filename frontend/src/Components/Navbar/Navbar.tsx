@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const { token, logOut } = useAuth(); 
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const navigate = useNavigate();
-const firstname = localStorage.getItem('firstname');
+const name = localStorage.getItem('name');
   const handleLogout = () => {
     logOut();
     navigate('/login');
@@ -59,7 +59,7 @@ const firstname = localStorage.getItem('firstname');
         {token ? (
           <div className="relative flex items-center">
             <span className="px-4 text-base cursor-pointer" onClick={toggleDropdown}>
-              Hi, { firstname || 'User'}
+              Hi, { name || 'User'}
             </span>
             <div className="relative">
               <div className="cursor-pointer" onClick={toggleDropdown}>

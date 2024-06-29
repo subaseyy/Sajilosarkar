@@ -25,6 +25,7 @@ const ScrapePricingTable = () => {
         });
 
         const data = await response.json();
+        // console.log('Data:', data)
         setRows(data);
       } catch (error) {
         console.error('Error fetching data:', error);
