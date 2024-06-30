@@ -13,10 +13,6 @@ const name = localStorage.getItem('name');
     navigate('/login');
   }
 
-  // function init() {
-  //   logOut();
-  // }
-
 
 
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);

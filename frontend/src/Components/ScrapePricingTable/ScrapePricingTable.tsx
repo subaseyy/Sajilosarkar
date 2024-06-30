@@ -9,6 +9,7 @@ import Table from '@mui/material/Table';
 
 const ScrapePricingTable = () => {
   const [rows, setRows] = useState([]);
+  
 
   const token = localStorage.getItem("token");
 
