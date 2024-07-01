@@ -21,5 +21,5 @@ public class IssueDto {
     private Boolean status;
     private MultipartFile image;
     private String getImage;
-    private Integer userId;
+    private Long userId;
 }

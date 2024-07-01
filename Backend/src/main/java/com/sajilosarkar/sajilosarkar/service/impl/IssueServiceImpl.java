@@ -99,6 +99,7 @@ public class IssueServiceImpl implements IssueService {
         issueDto.setPriority(issue.getPriority());
         issueDto.setStatus(issue.getStatus());
         issueDto.setGetImage(issue.getImage());
+        issueDto.setUserId(Long.valueOf(issue.getUser().getId()));
         return issueDto;
     }
 

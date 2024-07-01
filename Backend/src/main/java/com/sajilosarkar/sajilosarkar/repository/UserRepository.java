@@ -13,13 +13,10 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     // @Override
-    @SuppressWarnings("null")
     Optional<User> findById(Integer id);
-    // Optional<User> loadUserById(Integer id);
 
     Optional<User> findByEmail(String email);
     Optional<User> getUserByEmail(String email);
-//    Optional<User> findByUsername(String username);
 
     
     @Modifying

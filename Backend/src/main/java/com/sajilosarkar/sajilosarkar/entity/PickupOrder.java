@@ -45,7 +45,7 @@ public class PickupOrder {
     @Column(name = "total_price", nullable = false)
     private Double totalPrice;
 
-    @OneToMany(mappedBy = "pickupOrder", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
+    private List<ScrapeItems> scrapeItem;
 
 }
