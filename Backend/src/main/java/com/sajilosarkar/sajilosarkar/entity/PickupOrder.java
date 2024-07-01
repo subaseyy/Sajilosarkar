@@ -13,12 +13,16 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "pickup_order")
+@Getter
+@Setter
 public class PickupOrder {
 
     @Id
@@ -43,37 +47,5 @@ public class PickupOrder {
 
     @OneToMany(mappedBy = "pickupOrder", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
-
-    public Long getOrderId(){
-         return orderId; 
-        }
-    public void setOrderId(Long orderId) {
-         this.orderId = orderId; 
-        }
-    public User getCustomer() {
-         return customer; 
-    }
-    public void setCustomer(User customer) { 
-        this.customer = customer; 
-    }
-    public Date getOrderDate() {
-         return orderDate; 
-    }
-    public void setOrderDate(Date orderDate) {
-         this.orderDate = orderDate; 
-    }
-    public Date getPickupTime() {
-         return pickupTime;
-     }
-    public void setPickupTime(Date pickupTime) {
-         this.pickupTime = pickupTime; 
-    }
-    public Double getTotalPrice() { 
-        return totalPrice; 
-    }
-    public void setTotalPrice(Double totalPrice) { 
-        this.totalPrice = totalPrice;
-     }
-
 
 }
