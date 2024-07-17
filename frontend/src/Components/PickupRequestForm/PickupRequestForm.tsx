@@ -6,7 +6,7 @@ import axios from 'axios';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'tailwindcss/tailwind.css';
 
-interface ScrapItem {
+interface SrapeItem {
   id: number;
   name: string;
   price: number;
@@ -16,37 +16,55 @@ interface FormData {
   pickupDate: Date;
   pickupTime: Date;
   name: string;
-  scrapItems: { label: string; value: number; price: number }[];
+  srapeItems: { label: string; value: number; price: number }[];
+  totalPrice: number;
 }
 
 const PickupRequestForm = () => {
-  const { register, handleSubmit, control, setValue } = useForm<FormData>();
-  const [scrapItems, setScrapItems] = useState<ScrapItem[]>([]);
+  const { register, handleSubmit, control, setValue, watch } = useForm<FormData>();
+  const [srapeItems, setSrapeItems] = useState<SrapeItem[]>([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const userId = localStorage.getItem('userId') || '';
   const token = localStorage.getItem('token') || '';
 
   useEffect(() => {
-    const fetchScrapItems = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('/api/scrapitems/all', {
+        const response = await fetch('/api/scrapeitems/all', {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
-        setScrapItems(response.data);
+        const data: SrapeItem[] = await response.json();
+        setSrapeItems(Array.isArray(data) ? data : []);
       } catch (error) {
-        console.error('There was an error fetching the scrap items!', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchScrapItems();
+    fetchData();
   }, [token]);
+
+  const srapeOptions = srapeItems.map(item => ({
+    label: `${item.name} - $${item.price}`,
+    value: item.id,
+    price: item.price,
+  }));
+
+  // Watch selected srape items and update total price
+  const selectedSrapeItems = watch('srapeItems');
+  useEffect(() => {
+    if (selectedSrapeItems) {
+      const total = selectedSrapeItems.reduce((sum, item) => sum + parseFloat(item.price.toString()), 0);
+      setTotalPrice(total);
+    }
+  }, [selectedSrapeItems]);
 
   const onSubmit = async (data: FormData) => {
     const formattedData = {
       ...data,
-      scrapItems: data.scrapItems.map(item => ({
+      srapeItems: data.srapeItems.map(item => ({
         id: item.value,
         name: item.label,
         price: item.price,
@@ -56,7 +74,7 @@ const PickupRequestForm = () => {
     try {
       const response = await axios.post('/api/pickup-requests', formattedData, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
@@ -65,12 +83,6 @@ const PickupRequestForm = () => {
       console.error('There was an error submitting the form!', error);
     }
   };
-
-  const scrapOptions = scrapItems.map(item => ({
-    label: `${item.name} - $${item.price}`,
-    value: item.id,
-    price: item.price,
-  }));
 
   return (
     <div className="max-w-lg mx-auto p-4 bg-white shadow-md rounded">
@@ -112,8 +124,8 @@ const PickupRequestForm = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Name</label>
           <input
+            hidden
             type="text"
             value={userId} // assuming userId is the user's name for this example
             readOnly
@@ -123,20 +135,30 @@ const PickupRequestForm = () => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Scrap Items</label>
+          <label className="block text-sm font-medium text-gray-700">Srape Items</label>
           <Controller
-            name="scrapItems"
+            name="srapeItems"
             control={control}
             render={({ field }) => (
               <Select
                 {...field}
                 isMulti
-                options={scrapOptions}
+                options={srapeOptions}
                 className="w-full"
                 classNamePrefix="select"
-                onChange={selectedOptions => setValue('scrapItems', selectedOptions || [])}
+                onChange={selectedOptions => setValue('srapeItems', selectedOptions || [])}
               />
             )}
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Total Price</label>
+          <input
+            type="text"
+            value={`$${totalPrice}`}
+            readOnly
+            className="w-full p-2 border border-gray-300 rounded bg-gray-100"
           />
         </div>
 
