@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -7,17 +7,23 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 
+// Define an interface for the rows
+interface ScrapeItem {
+  id: number;
+  name: string;
+  category?: string; // Assuming category might be optional
+  price: number;
+}
+
 const ScrapePricingTable = () => {
-  const [rows, setRows] = useState([]);
-  
+  const [rows, setRows] = useState<ScrapeItem[]>([]);
 
-  const token = localStorage.getItem("token");
-
+  const token = localStorage.getItem("token") || '';
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8089/api/scrapeitems/all', {
+        const response = await fetch('/api/scrapeitems/all', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -25,8 +31,7 @@ const ScrapePricingTable = () => {
           }
         });
 
-        const data = await response.json();
-        // console.log('Data:', data)
+        const data: ScrapeItem[] = await response.json();
         setRows(data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -34,7 +39,7 @@ const ScrapePricingTable = () => {
     };
 
     fetchData();
-  }, []);
+  }, [token]); // Add token as a dependency
 
   return (
     <div>

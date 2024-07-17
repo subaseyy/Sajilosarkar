@@ -103,7 +103,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/authenticate")
+                .requestMatchers("/authenticate", "/api/scrap-items/all")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
