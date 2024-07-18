@@ -6,9 +6,11 @@ import com.sajilosarkar.sajilosarkar.entity.PickupOrder;
 import com.sajilosarkar.sajilosarkar.entity.ScrapeItems;
 import com.sajilosarkar.sajilosarkar.entity.User;
 import com.sajilosarkar.sajilosarkar.repository.PickupOrderRepository;
+import com.sajilosarkar.sajilosarkar.repository.ScrapeItemsRepository;
 import com.sajilosarkar.sajilosarkar.repository.UserRepository;
 import com.sajilosarkar.sajilosarkar.service.PickupOrderService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,10 +20,12 @@ public class PickupOrderServiceImpl implements PickupOrderService {
 
     private final PickupOrderRepository pickupOrderRepository;
     private final UserRepository userRepository;
+    private final ScrapeItemsRepository scrapeItemsRepository;
 
-    public PickupOrderServiceImpl(PickupOrderRepository pickupOrderRepository, UserRepository userRepository) {
+    public PickupOrderServiceImpl(PickupOrderRepository pickupOrderRepository, UserRepository userRepository, ScrapeItemsRepository scrapeItemsRepository) {
         this.pickupOrderRepository = pickupOrderRepository;
         this.userRepository = userRepository;
+        this.scrapeItemsRepository = scrapeItemsRepository;
     }
 
     @Override
@@ -46,6 +50,7 @@ public class PickupOrderServiceImpl implements PickupOrderService {
     }
 
     @Override
+    @Transactional
     public void savePickupOrder(PickupOrderDTO pickupOrderDTO) {
         PickupOrder pickupOrder = new PickupOrder();
         pickupOrder.setOrderId(pickupOrderDTO.getOrderId());
@@ -58,13 +63,8 @@ public class PickupOrderServiceImpl implements PickupOrderService {
         pickupOrder.setCustomer(customer);
 
         List<ScrapeItems> scrapeItems = pickupOrderDTO.getScrapeItems().stream()
-                .map(dto -> {
-                    ScrapeItems scrapeItem = new ScrapeItems();
-                    scrapeItem.setId(scrapeItem.getId());
-                    scrapeItem.setName(scrapeItem.getName());
-                    scrapeItem.setPrice(scrapeItem.getPrice());
-                    return scrapeItem;
-                })
+                .map(dto -> scrapeItemsRepository.findById(dto.getId())
+                        .orElseThrow(() -> new RuntimeException("Scrape item not found")))
                 .collect(Collectors.toList());
         pickupOrder.setScrapeItems(scrapeItems);
 

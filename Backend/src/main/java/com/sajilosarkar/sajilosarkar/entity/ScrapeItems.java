@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -27,8 +29,7 @@ public class ScrapeItems {
     @Column(nullable = false)
     private String category;
 
-    @ManyToOne
-    @JoinColumn(name = "pickup_order_id")
-    private PickupOrder pickupOrder;
+    @ManyToMany(mappedBy = "scrapeItems")
+    private List<PickupOrder> pickupOrders;
     
 }

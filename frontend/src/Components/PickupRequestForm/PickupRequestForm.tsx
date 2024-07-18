@@ -7,24 +7,24 @@ import { format } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 import "tailwindcss/tailwind.css";
 
-interface SrapeItem {
+interface ScrapeItem {
   id: number;
   name: string;
   price: number;
 }
 
 interface FormData {
-  pickupDate: Date;
+  orderDate: Date;
   pickupTime: Date;
-  userId: string;
-  srapeItems: { label: string; value: number; price: number }[];
+  customerId: string;
+  scrapeItems: { value: number; label: string; price: number }[];
   totalPrice: number;
 }
 
 const PickupRequestForm = () => {
   const { register, handleSubmit, control, setValue, watch } =
     useForm<FormData>();
-  const [srapeItems, setSrapeItems] = useState<SrapeItem[]>([]);
+  const [scrapeItems, setScrapeItems] = useState<ScrapeItem[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const userId = localStorage.getItem("id") || "";
   const token = localStorage.getItem("token") || "";
@@ -32,18 +32,18 @@ const PickupRequestForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/scrapeitems/all", {
+        const response = await axios.get("/api/scrapeitems/all", {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         });
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.data) {
+          throw new Error(`No data received!`);
         }
-        const data: SrapeItem[] = await response.json();
+        const data: ScrapeItem[] = response.data;
         if (Array.isArray(data)) {
-          setSrapeItems(data);
+          setScrapeItems(data);
         } else {
           console.error("Invalid data format:", data);
         }
@@ -55,36 +55,40 @@ const PickupRequestForm = () => {
     fetchData();
   }, [token]);
 
-  const srapeOptions = srapeItems.map((item) => ({
+  const scrapeOptions = scrapeItems.map((item) => ({
     label: `${item.name} - $${item.price}`,
     value: item.id,
     price: item.price,
   }));
 
-  const selectedSrapeItems = watch("srapeItems");
+  const selectedScrapeItems = watch("scrapeItems");
+
   useEffect(() => {
-    if (selectedSrapeItems) {
-      const total = selectedSrapeItems.reduce(
+    if (selectedScrapeItems) {
+      const total = selectedScrapeItems.reduce(
         (sum, item) => sum + parseFloat(item.price.toString()),
         0
       );
       setTotalPrice(total);
       setValue("totalPrice", total);
     }
-  }, [selectedSrapeItems, setValue]);
+  }, [selectedScrapeItems, setValue]);
 
   const onSubmit = async (data: FormData) => {
     console.log("Form data before submission:", data);
-// Format the date and time
-const formattedData = {
-  ...data,
-  pickupDate: format(data.pickupDate, "yyyy-MM-dd"),
-  pickupTime: format(data.pickupTime, "HH:mm:ss"),
-};
 
+    // Format the date and time
+    const formattedData = {
+      ...data,
+      orderDate: format(data.orderDate, "yyyy-MM-dd"),
+      pickupTime: format(data.pickupTime, "HH:mm:ss"),
+      scrapeItems: data.scrapeItems.map((item) => ({
+        id: item.value,
+        price: item.price,
+      })),
+    };
 
-try {
-
+    try {
       const response = await axios.post(
         "/api/scrapeitems/pickup",
         formattedData,
@@ -98,7 +102,6 @@ try {
 
       console.log("Form successfully submitted:", response.data);
     } catch (error) {
-      console.log("Form data after submission:", data);
       console.error("There was an error submitting the form!", error);
     }
   };
@@ -116,7 +119,7 @@ try {
                 Date
               </label>
               <Controller
-                name="pickupDate"
+                name="orderDate"
                 control={control}
                 render={({ field }) => (
                   <DatePicker
@@ -159,26 +162,33 @@ try {
               value={userId}
               readOnly
               className="w-full p-2 border border-gray-300 rounded bg-gray-100"
-              {...register("userId")}
+              {...register("customerId")}
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Srape Items
+              Scrape Items
             </label>
             <Controller
-              name="srapeItems"
+              name="scrapeItems"
               control={control}
               render={({ field }) => (
                 <Select
                   {...field}
                   isMulti
-                  options={srapeOptions}
+                  options={scrapeOptions}
                   className="w-full"
                   classNamePrefix="select"
                   onChange={(selectedOptions) =>
-                    setValue("srapeItems", selectedOptions || [])
+                    setValue(
+                      "scrapeItems",
+                      selectedOptions.map((option) => ({
+                        label: option.label,
+                        value: option.value,
+                        price: option.price,
+                      }))
+                    )
                   }
                 />
               )}

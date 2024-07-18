@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScrapeItemDto {
-    private long id;
+    private Integer id;
     private String name;
     private String price;
     private String description;

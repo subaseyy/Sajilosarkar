@@ -16,9 +16,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class PickupOrderDTO {
     private Long orderId;
-    private Integer customerId; // Changed to Long to match entity
+    private Integer customerId;
     private Date orderDate;
     private LocalTime pickupTime;
     private Double totalPrice;
-    private List<ScrapeItemDto> scrapeItems; // Ensure the correct ty
+    private List<ScrapeItemDto> scrapeItems;
 }
