@@ -45,9 +45,12 @@ public class Issue {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-
-    public void setUserId(Integer id) {
-        this.user.setId(id);
-
+    
+    public void setUserId(Integer userId) {
+        if (this.user == null) {
+            this.user = new User(); // Ensure user is initialized
+        }
+        this.user.setId(userId);
     }
+    
 }

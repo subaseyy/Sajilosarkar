@@ -25,7 +25,7 @@ public class IssueController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> createIssue(@RequestParam Integer userId,
+    public ResponseEntity<?> createIssue(@RequestParam("userId") Integer userId,
             @RequestPart("issue") IssueDto issueDto,
             @RequestPart("image") MultipartFile file) {
         try {

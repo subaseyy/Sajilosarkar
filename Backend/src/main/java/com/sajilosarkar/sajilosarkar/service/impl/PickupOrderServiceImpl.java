@@ -3,11 +3,13 @@ package com.sajilosarkar.sajilosarkar.service.impl;
 import com.sajilosarkar.sajilosarkar.dto.PickupOrderDTO;
 import com.sajilosarkar.sajilosarkar.dto.ScrapeItemDto;
 import com.sajilosarkar.sajilosarkar.entity.PickupOrder;
+import com.sajilosarkar.sajilosarkar.entity.ScrapeItems;
+import com.sajilosarkar.sajilosarkar.entity.User;
 import com.sajilosarkar.sajilosarkar.repository.PickupOrderRepository;
+import com.sajilosarkar.sajilosarkar.repository.UserRepository;
 import com.sajilosarkar.sajilosarkar.service.PickupOrderService;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,9 +17,11 @@ import java.util.stream.Collectors;
 public class PickupOrderServiceImpl implements PickupOrderService {
 
     private final PickupOrderRepository pickupOrderRepository;
+    private final UserRepository userRepository;
 
-    public PickupOrderServiceImpl(PickupOrderRepository pickupOrderRepository) {
+    public PickupOrderServiceImpl(PickupOrderRepository pickupOrderRepository, UserRepository userRepository) {
         this.pickupOrderRepository = pickupOrderRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -31,11 +35,39 @@ public class PickupOrderServiceImpl implements PickupOrderService {
     private PickupOrderDTO convertToDto(PickupOrder pickupOrder) {
         PickupOrderDTO pickupOrderDTO = new PickupOrderDTO();
         pickupOrderDTO.setOrderId(pickupOrder.getOrderId());
-        pickupOrderDTO.setOrderDate((Date) pickupOrder.getOrderDate());
-        pickupOrderDTO.setPickupTime((Date) pickupOrder.getPickupTime());
+        pickupOrderDTO.setOrderDate(pickupOrder.getOrderDate());
+        pickupOrderDTO.setPickupTime(pickupOrder.getPickupTime());
         pickupOrderDTO.setTotalPrice(pickupOrder.getTotalPrice());
-        pickupOrderDTO.setScrapeItem(pickupOrder.getScrapeItem());
-        pickupOrderDTO.setCustomerId(Long.valueOf(pickupOrder.getCustomer().getId()));
+        pickupOrderDTO.setScrapeItems(pickupOrder.getScrapeItems().stream()
+        .map(scrapeItem -> new ScrapeItemDto())
+                .collect(Collectors.toList()));
+        pickupOrderDTO.setCustomerId(pickupOrder.getCustomer().getId());
         return pickupOrderDTO;
+    }
+
+    @Override
+    public void savePickupOrder(PickupOrderDTO pickupOrderDTO) {
+        PickupOrder pickupOrder = new PickupOrder();
+        pickupOrder.setOrderId(pickupOrderDTO.getOrderId());
+        pickupOrder.setOrderDate(pickupOrderDTO.getOrderDate());
+        pickupOrder.setPickupTime(pickupOrderDTO.getPickupTime());
+        pickupOrder.setTotalPrice(pickupOrderDTO.getTotalPrice());
+
+        User customer = userRepository.findById(pickupOrderDTO.getCustomerId())
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        pickupOrder.setCustomer(customer);
+
+        List<ScrapeItems> scrapeItems = pickupOrderDTO.getScrapeItems().stream()
+                .map(dto -> {
+                    ScrapeItems scrapeItem = new ScrapeItems();
+                    scrapeItem.setId(scrapeItem.getId());
+                    scrapeItem.setName(scrapeItem.getName());
+                    scrapeItem.setPrice(scrapeItem.getPrice());
+                    return scrapeItem;
+                })
+                .collect(Collectors.toList());
+        pickupOrder.setScrapeItems(scrapeItems);
+
+        pickupOrderRepository.save(pickupOrder);
     }
 }

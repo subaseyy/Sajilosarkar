@@ -7,4 +7,6 @@ import java.util.List;
 public interface PickupOrderService {
     List<PickupOrderDTO> getAllPickupOrderItem();
 
+    void savePickupOrder(PickupOrderDTO pickupOrderDTO);
+
 }

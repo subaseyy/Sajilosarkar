@@ -37,19 +37,47 @@ public class IssueServiceImpl implements IssueService {
 
     private final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/media/images/issue_raise";
 
+    // @Override
+    // public void saveIssue(IssueDto issueDto, MultipartFile image, Integer userId) throws IOException {
+    //     Issue issue = convertToEntity(issueDto);
+    //     UserDto userDto = userService.findUserById(userId);
+    //     issue.setUserId(userDto.getId());
+    //     if (image != null && !image.isEmpty()) {
+    //         String filename = FilenameUtils.getName(image.getOriginalFilename());
+    //         Path path = Paths.get(UPLOAD_DIRECTORY + "/" + filename);
+    //         Files.write(path, image.getBytes());
+    //         issue.setImage(filename);
+    //     } else {
+    //         issue.setImage(null);
+    //     }
+    //     issueRepository.save(issue);
+    // }
+
     @Override
     public void saveIssue(IssueDto issueDto, MultipartFile image, Integer userId) throws IOException {
         Issue issue = convertToEntity(issueDto);
+        
+        // Ensure userDto is not null
         UserDto userDto = userService.findUserById(userId);
-        issue.setUserId(userDto.getId());
+        if (userDto != null) {
+            issue.setUserId(userDto.getId()); // Ensure this method correctly handles the user
+        } else {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+        
+        // Handle image upload
         if (image != null && !image.isEmpty()) {
             String filename = FilenameUtils.getName(image.getOriginalFilename());
             Path path = Paths.get(UPLOAD_DIRECTORY + "/" + filename);
+            if (!Files.exists(path.getParent())) {
+                Files.createDirectories(path.getParent());
+            }
             Files.write(path, image.getBytes());
             issue.setImage(filename);
         } else {
             issue.setImage(null);
         }
+        
         issueRepository.save(issue);
     }
 

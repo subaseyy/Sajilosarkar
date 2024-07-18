@@ -20,6 +20,7 @@
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
+    "date-fns": "^3.6.0",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "postcss-cli": "^11.0.0",

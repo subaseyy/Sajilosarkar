@@ -1,13 +1,13 @@
 package com.sajilosarkar.sajilosarkar.dto;
 
-import com.sajilosarkar.sajilosarkar.entity.ScrapeItems;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalTime;
 import java.util.List;
-import java.sql.Date;
+import java.util.Date;
 
 
 @Setter
@@ -16,9 +16,9 @@ import java.sql.Date;
 @NoArgsConstructor
 public class PickupOrderDTO {
     private Long orderId;
-    private Long customerId;
+    private Integer customerId; // Changed to Long to match entity
     private Date orderDate;
-    private Date pickupTime;
+    private LocalTime pickupTime;
     private Double totalPrice;
-    private List<ScrapeItems> scrapeItem;
+    private List<ScrapeItemDto> scrapeItems; // Ensure the correct ty
 }

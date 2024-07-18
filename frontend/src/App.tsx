@@ -19,7 +19,6 @@ import Accessibility from "./Client/HelpandSupport/accessibility";
 import UserGuidePage from "./Client/HelpandSupport/userGuide";
 import PickupRequest from "./Client/ScrapeItems/PickupRequest";
 import ScrapePricing from "./Client/ScrapeItems/ScrapePricing";
-import PreviousRequest from "./Client/ScrapeItems/PreviousRequest";
 
 const App: React.FC = () => {
   return (
@@ -114,14 +113,7 @@ const App: React.FC = () => {
               </ProtectedRoute>
             }
           />
-           <Route
-            path="/dashboard/previous-requests"
-            element={
-              <ProtectedRoute>
-                < PreviousRequest />
-              </ProtectedRoute>
-            }
-          />
+           
         </Routes>
       </AuthProvider>
     </Router>

@@ -3,7 +3,6 @@ package com.sajilosarkar.sajilosarkar.controller;
 import com.sajilosarkar.sajilosarkar.config.JwtService;
 import com.sajilosarkar.sajilosarkar.dto.LoginDto;
 import com.sajilosarkar.sajilosarkar.dto.UserDto;
-import com.sajilosarkar.sajilosarkar.service.AuthService;
 import com.sajilosarkar.sajilosarkar.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
