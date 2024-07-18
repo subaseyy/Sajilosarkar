@@ -38,7 +38,6 @@ const Sidebar: React.FC = () => {
         <MenuItem title="Scrape Data">
           <MenuItem title="Scrape Pricing" to="/dashboard/scrape-pricing" />
           <MenuItem title="Pickup Request" to="/dashboard/pickup-requests" />
-          <MenuItem title="Previous Request" to="/dashboard/previous-requests" />
         </MenuItem>
         <MenuItem title="Help & Support">
           <MenuItem title="FAQ" to="/faq" />

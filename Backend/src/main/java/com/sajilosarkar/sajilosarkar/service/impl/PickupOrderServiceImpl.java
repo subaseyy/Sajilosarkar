@@ -70,4 +70,14 @@ public class PickupOrderServiceImpl implements PickupOrderService {
 
         pickupOrderRepository.save(pickupOrder);
     }
+
+
+    @Override
+    public List<PickupOrderDTO> findPickupOrderByUserId(Integer userId) {
+      User customer = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+      List<PickupOrder> pickupOrders = pickupOrderRepository.findByCustomer(customer);
+      return pickupOrders.stream()
+              .map(this::convertToDto)
+              .collect(Collectors.toList());
+    }
 }

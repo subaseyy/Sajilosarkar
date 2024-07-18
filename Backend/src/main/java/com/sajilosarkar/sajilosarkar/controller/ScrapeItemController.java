@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -32,11 +31,25 @@ public class ScrapeItemController {
             pickupOrderService.savePickupOrder(pickupOrderDTO);
             return ResponseEntity.ok("Pickup order added successfully!");
         } catch (Exception e) {
-            e.printStackTrace(); // Log the exception details
-            return ResponseEntity.status(500).body("Failed to add pickup order");
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Failed to add pickup order");
         }
     }
 
+            
+            
+    @GetMapping("{userid}/order")
+    public ResponseEntity<List<PickupOrderDTO>> getPickupOrderbyUser(@PathVariable Integer userid) {
+        List<PickupOrderDTO> pickupOrder = pickupOrderService.findPickupOrderByUserId(userid);
+        return ResponseEntity.ok(pickupOrder);
+
+    }
+
+    @GetMapping("{userid}/order/{id}")
+    public ResponseEntity<List<PickupOrderDTO>> getPickupOrderbyUser(@PathVariable Integer userid, @PathVariable Integer id){
+        List<PickupOrderDTO> pickupOrder = pickupOrderService.findPickupOrderByUserId(userid);
+        return ResponseEntity.ok(pickupOrder);
+    }
 
     @GetMapping("/pickup")
     public ResponseEntity<List<PickupOrderDTO>> getPickupOrders() {
