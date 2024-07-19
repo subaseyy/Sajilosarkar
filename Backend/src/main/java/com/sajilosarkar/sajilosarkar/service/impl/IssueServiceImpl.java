@@ -152,11 +152,11 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public void deleteIssueById(Integer id) {
-        Optional<Issue> optionalIssue = issueRepository.findById(id);
-        if (optionalIssue.isPresent()) {
+    public void deleteIssueById(int id) {
+        if(issueRepository.existsById(id)) {
             issueRepository.deleteById(id);
-        } else {
+        }
+         else {
             throw new RuntimeException("Issue not found with id: " + id);
         }
     }

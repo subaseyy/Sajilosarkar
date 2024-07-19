@@ -51,6 +51,16 @@ public class ScrapeItemController {
         return ResponseEntity.ok(pickupOrder);
     }
 
+    @DeleteMapping("{userid}/order/{id}")
+    public ResponseEntity<?> deletePickupOrder(@PathVariable Integer userid, @PathVariable Integer id) {
+        try {
+            pickupOrderService.deletePickupOrderById(id); // Ensure this method is implemented in your service
+            return ResponseEntity.ok("Order deleted successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Failed to delete order");
+        }
+    }
+
     @GetMapping("/pickup")
     public ResponseEntity<List<PickupOrderDTO>> getPickupOrders() {
         List<PickupOrderDTO> pickupOrderItems = pickupOrderService.getAllPickupOrderItem();

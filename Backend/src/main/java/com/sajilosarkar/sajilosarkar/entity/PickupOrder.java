@@ -40,5 +40,7 @@ public class PickupOrder {
             joinColumns = @JoinColumn(name = "pickup_order_id"),
             inverseJoinColumns = @JoinColumn(name = "scrape_item_id")
     )
+
+
     private List<ScrapeItems> scrapeItems;
 }

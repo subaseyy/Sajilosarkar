@@ -36,14 +36,24 @@ public class PickupOrderServiceImpl implements PickupOrderService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deletePickupOrderById(int id) {
+        if (pickupOrderRepository.existsById((long) id)) {
+            pickupOrderRepository.deleteById((long) id);
+        } else {
+            throw new RuntimeException("Order not found with id: " + id);
+        }
+    }
+
     private PickupOrderDTO convertToDto(PickupOrder pickupOrder) {
         PickupOrderDTO pickupOrderDTO = new PickupOrderDTO();
+        pickupOrderDTO.setOrderId(pickupOrder.getOrderId());  // Ensure this is mapped
         pickupOrderDTO.setOrderId(pickupOrder.getOrderId());
         pickupOrderDTO.setOrderDate(pickupOrder.getOrderDate());
         pickupOrderDTO.setPickupTime(pickupOrder.getPickupTime());
         pickupOrderDTO.setTotalPrice(pickupOrder.getTotalPrice());
         pickupOrderDTO.setScrapeItems(pickupOrder.getScrapeItems().stream()
-        .map(scrapeItem -> new ScrapeItemDto())
+                .map(scrapeItem -> new ScrapeItemDto(scrapeItem.getId(), scrapeItem.getName(), scrapeItem.getPrice()))
                 .collect(Collectors.toList()));
         pickupOrderDTO.setCustomerId(pickupOrder.getCustomer().getId());
         return pickupOrderDTO;
@@ -53,6 +63,7 @@ public class PickupOrderServiceImpl implements PickupOrderService {
     @Transactional
     public void savePickupOrder(PickupOrderDTO pickupOrderDTO) {
         PickupOrder pickupOrder = new PickupOrder();
+        pickupOrder.setOrderId(pickupOrderDTO.getOrderId());  // Ensure this is set if updating
         pickupOrder.setOrderId(pickupOrderDTO.getOrderId());
         pickupOrder.setOrderDate(pickupOrderDTO.getOrderDate());
         pickupOrder.setPickupTime(pickupOrderDTO.getPickupTime());
@@ -71,13 +82,12 @@ public class PickupOrderServiceImpl implements PickupOrderService {
         pickupOrderRepository.save(pickupOrder);
     }
 
-
     @Override
     public List<PickupOrderDTO> findPickupOrderByUserId(Integer userId) {
-      User customer = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-      List<PickupOrder> pickupOrders = pickupOrderRepository.findByCustomer(customer);
-      return pickupOrders.stream()
-              .map(this::convertToDto)
-              .collect(Collectors.toList());
+        User customer = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        List<PickupOrder> pickupOrders = pickupOrderRepository.findByCustomer(customer);
+        return pickupOrders.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 }

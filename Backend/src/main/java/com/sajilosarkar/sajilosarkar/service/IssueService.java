@@ -16,7 +16,7 @@ public interface IssueService {
 
     void updateIssueStatus(Integer id, Boolean status);
 
-    void deleteIssueById(Integer id);
+    void deleteIssueById(int id);
 
     List<IssueDto> findIssuesByTitle(String title);
 

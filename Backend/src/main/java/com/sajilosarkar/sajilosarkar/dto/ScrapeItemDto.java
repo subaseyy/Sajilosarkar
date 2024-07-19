@@ -17,4 +17,7 @@ public class ScrapeItemDto {
     private String description;
     private String category;
 
+
+    public ScrapeItemDto(Integer id, String name, String price) {
+    }
 }

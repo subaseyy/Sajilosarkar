@@ -9,6 +9,8 @@ public interface PickupOrderService {
 
 //    List<PickupOrderDTO> findByUser(User customer);
 
+    void deletePickupOrderById(int pickupOrderId);
+
     void savePickupOrder(PickupOrderDTO pickupOrderDTO);
 
     List<PickupOrderDTO> findPickupOrderByUserId(Integer userId);

@@ -32,4 +32,12 @@ public interface IssueRepository extends JpaRepository<Issue, Integer> {
     List<Issue> findByPriority(String priority);
 
     List<Issue> findByStatus(Boolean status);
+
+    default boolean existsById(Integer id) {
+        return false;
+    }
+
+    default void deleteById(Integer id) {
+
+    }
 }

@@ -53,8 +53,21 @@ public class IssueController {
         return ResponseEntity.ok(issues);
     }
 
-    @GetMapping("{userid}/list/{id}")
-    public ResponseEntity<List<IssueDto>> getIssuesByUser(@PathVariable Integer userid, @PathVariable Integer id) {
+    @DeleteMapping("/{userid}/order/{id}")
+    public ResponseEntity<String> deleteIssueById(@PathVariable Integer userid, @PathVariable Integer id) {
+        try {
+            issueService.deleteIssueById(id);
+            return ResponseEntity.ok("Issue deleted successfully");
+        } catch (RuntimeException e) {
+            // Log the exception for debugging
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Failed to delete issue: " + e.getMessage());
+        }
+    }
+
+
+    @DeleteMapping("{userid}/list/{id}")
+    public ResponseEntity<?> deleteReportedIssues(@PathVariable Integer userid, @PathVariable Integer id) {
         List<IssueDto> issues = issueService.findIssuesByUserId(userid);
         return ResponseEntity.ok(issues);
     }
