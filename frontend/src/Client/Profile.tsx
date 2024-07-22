@@ -124,7 +124,7 @@ const Profile: React.FC = () => {
          
             <div className="mb-4 flex justify-center">
               <img 
-                src={user.image} 
+                src='{user.image}' 
                 alt="Profile" 
                 className="w-32 h-32 object-cover rounded-full border-2 border-gray-300"
               />
