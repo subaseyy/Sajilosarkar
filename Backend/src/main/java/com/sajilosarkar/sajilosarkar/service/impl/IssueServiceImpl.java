@@ -37,22 +37,6 @@ public class IssueServiceImpl implements IssueService {
 
     private final String UPLOAD_DIRECTORY = System.getProperty("user.dir") + "/media/images/issue_raise";
 
-    // @Override
-    // public void saveIssue(IssueDto issueDto, MultipartFile image, Integer userId) throws IOException {
-    //     Issue issue = convertToEntity(issueDto);
-    //     UserDto userDto = userService.findUserById(userId);
-    //     issue.setUserId(userDto.getId());
-    //     if (image != null && !image.isEmpty()) {
-    //         String filename = FilenameUtils.getName(image.getOriginalFilename());
-    //         Path path = Paths.get(UPLOAD_DIRECTORY + "/" + filename);
-    //         Files.write(path, image.getBytes());
-    //         issue.setImage(filename);
-    //     } else {
-    //         issue.setImage(null);
-    //     }
-    //     issueRepository.save(issue);
-    // }
-
     @Override
     public void saveIssue(IssueDto issueDto, MultipartFile image, Integer userId) throws IOException {
         Issue issue = convertToEntity(issueDto);
