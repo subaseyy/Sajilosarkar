@@ -85,6 +85,11 @@ public class UserController {
         return userDto != null ? ResponseEntity.ok(userDto) : ResponseEntity.status(403).build();
     }
 
+//    @PutMapping("/me")
+//    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto) {
+//
+//    }
+
     @GetMapping("/list")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> users = userService.findAllUsers();
