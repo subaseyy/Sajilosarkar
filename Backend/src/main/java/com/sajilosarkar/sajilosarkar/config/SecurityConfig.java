@@ -61,9 +61,6 @@ package com.sajilosarkar.sajilosarkar.config;
 
 
 
-import com.sajilosarkar.sajilosarkar.service.impl.CustomUserDetailService;
-import com.sajilosarkar.sajilosarkar.util.PasswordEncoderUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -74,6 +71,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.sajilosarkar.sajilosarkar.service.impl.CustomUserDetailService;
+import com.sajilosarkar.sajilosarkar.util.PasswordEncoderUtil;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
@@ -103,7 +105,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/authenticate", "/error", "/hello", "/api/scrapeitems/all")
+                        .requestMatchers("/*")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

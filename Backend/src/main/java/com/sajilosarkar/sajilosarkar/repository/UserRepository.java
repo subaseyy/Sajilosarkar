@@ -19,7 +19,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email);
     Optional<User> getUserByEmail(String email);
 
-    
+
+
     @Modifying
     @Query(value="insert into user_roles(role_id,user_id) values(?1,?2)",nativeQuery = true)
     void saveRoleUser(Integer role_id,Integer user_id);

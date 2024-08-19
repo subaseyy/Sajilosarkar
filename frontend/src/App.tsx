@@ -19,6 +19,10 @@ import Accessibility from "./Client/HelpandSupport/accessibility";
 import UserGuidePage from "./Client/HelpandSupport/userGuide";
 import PickupRequest from "./Client/ScrapeItems/PickupRequest";
 import ScrapePricing from "./Client/ScrapeItems/ScrapePricing";
+import ScrapeItemManager from "./Admin/Scrapedata/ScrapeItemManager";
+import IssueTable from "./Admin/Issue/IssueList";
+import DashboardSummary from "./Admin/Dashboard/Dashboard";
+import UserManagement from "./Admin/Users/UserManagement";
 
 const App: React.FC = () => {
   return (
@@ -37,7 +41,7 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <Dashboard />
-              </ProtectedRoute>
+               </ProtectedRoute>
             }
           />
           <Route
@@ -45,7 +49,7 @@ const App: React.FC = () => {
             element={
               <ProtectedRoute>
                 <NewIssueReport />
-              </ProtectedRoute>
+               </ProtectedRoute>
             }
           />
           <Route
@@ -108,8 +112,40 @@ const App: React.FC = () => {
           <Route
             path="/dashboard/pickup-requests"
             element={
-              <ProtectedRoute>
+               <ProtectedRoute>
                 <PickupRequest />
+               </ProtectedRoute> 
+            }
+          />
+          <Route
+            path="/admin/"
+            element={
+              <ProtectedRoute>
+                < DashboardSummary />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/Scrape-requests"
+            element={
+              <ProtectedRoute>
+                < ScrapeItemManager />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <UserManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/report-issue/"
+            element={
+              <ProtectedRoute>
+                < IssueTable />
               </ProtectedRoute>
             }
           />
