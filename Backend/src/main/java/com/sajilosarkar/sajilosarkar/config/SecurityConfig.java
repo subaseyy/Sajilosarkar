@@ -60,7 +60,6 @@ package com.sajilosarkar.sajilosarkar.config;
 //}
 
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -105,8 +104,8 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/*")
-                        .permitAll()
+                .requestMatchers("/authenticate", "/api/users/login", "/api/users/register" , "/error", "/hello", "/api/scrapeitems/all")
+                .permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(management -> management

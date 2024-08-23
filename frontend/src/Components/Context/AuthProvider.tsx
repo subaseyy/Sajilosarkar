@@ -55,7 +55,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   const loginAction = async (credentials: { username: string; password: string }) => {
     try {
-      const response = await axios.post("http://localhost:8089/authenticate", credentials);
+      const response = await axios.post("/api/users/login", credentials);
       const { roles, name, id, token } = response.data;
       setToken(token);
       localStorage.setItem("token", token);
